@@ -56,7 +56,7 @@ if(!isset($_SESSION["email"]) && !isset($_SESSION["password"])){
                     <td> Email: </td>
                     <td>
                         <input type="email" name="email" required="required"><br>
-                        <span id="valid_email_message" class="mesage_error"></span>
+                        <span id="valid_email_message"></span>
                     </td>
                 </tr>
 

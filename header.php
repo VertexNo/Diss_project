@@ -22,27 +22,56 @@ session_start();
 
             //регулярное выражение для проверки email
             var pattern = /^[a-z0-9][a-z0-9\._-]*[a-z0-9]*@([a-z0-9]+([a-z0-9-]*[a-z0-9]+)*\.)+[a-z]+/i;
-            var mail = $('input[name=email]');
+            $('input[name=email]').blur(function(){
 
-            mail.blur(function(){
-                if(mail.val() != ''){
+                if($(this).val() != ''){
 
                     // Проверяем, если введенный email соответствует регулярному выражению
-                    if(mail.val().search(pattern) == 0){
-                        // Убираем сообщение об ошибке
-                        $('#valid_email_message').text('');
+                    if($(this).val().search(pattern) == 0){
+
+                        // Место для отправки значения поля email на сервер, через Ajax
+                        $.ajax({
+
+                            // Название файла, в котором будем проверять email на существование в базе данных
+                            url: "check_email.php",
+
+                            // Указывываем каким методом будут переданы данные
+                            type: "POST",
+
+                            // Указывываем в формате JSON какие данные нужно передать
+                            data: {
+                                email: $(this).val()
+                            },
+
+                            // Тип содержимого которого мы ожидаем получить от сервера.
+                            dataType: "html",
+
+                            // Функция которая будет выполнятся перед отправкой данных
+                            beforeSend: function(){
+
+                                $('#valid_email_message').text('Проверяется...');
+                            },
+
+                            // Функция которая будет выполнятся после того как все данные будут успешно получены.
+                            success: function(data){
+
+                                //Полученный ответ помещаем внутри тега span
+                                $('#valid_email_message').html(data);
+                            }
+                        });
 
                         //Активируем кнопку отправки
                         $('input[type=submit]').attr('disabled', false);
                     }else{
                         //Выводим сообщение об ошибке
-                        $('#valid_email_message').text('Не правильный Email');
+                        $('#valid_email_message').html('<span class="mesage_error mesage_error_auth">Не правильный Email</span>');
 
                         // Дезактивируем кнопку отправки
                         $('input[type=submit]').attr('disabled', true);
                     }
+
                 }else{
-                    $('#valid_email_message').text('Введите Ваш email');
+                    $('#valid_email_message').html('<span class="mesage_error mesage_error_auth">Введите Ваш email</span>');
                 }
             });
 
