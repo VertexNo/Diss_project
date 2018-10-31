@@ -252,11 +252,15 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             exit();
         }else{
 
-            $_SESSION["success_messages"] = "<p class='success_message'>Регистрация прошла успешно!!! <br />Теперь Вы можете авторизоваться используя Ваш логин и пароль.</p>";
+            $_SESSION["success_messages"] = "<p class='success_message'>Регистрация пользователя прошла успешно <br />Пользователь зарегистрирован</p>";
 
-            //Отправляем пользователя на страницу авторизации
+            /*//Отправляем пользователя на страницу авторизации
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_auth.php");
+            header("Location: ".$address_site."/form_auth.php");*/
+
+            //Отправляем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: ".$address_site."/form_register.php");
         }
 
         /* Завершение запроса */

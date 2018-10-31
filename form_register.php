@@ -31,7 +31,7 @@ require_once("header.php");
 <?php
 //ѕровер€ем, если пользователь не авторизован, то выводим форму регистрации,
 //иначе выводим сообщение о том, что он уже зарегистрирован
-if(!isset($_SESSION["email"]) && !isset($_SESSION["password"])){
+if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_Role_id'])==1){ //убрал "Ќ≈"
     ?>
     <div id="form_register">
         <h2>‘орма регистрации</h2>
@@ -88,7 +88,7 @@ if(!isset($_SESSION["email"]) && !isset($_SESSION["password"])){
 }else{
     ?>
     <div id="authorized">
-        <h2>¬ы уже зарегистрированы</h2>
+        <h2>” вас нет прав дл€ регистрации пользователей</h2>
     </div>
     <?php
 }

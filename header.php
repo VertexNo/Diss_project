@@ -116,9 +116,7 @@ session_start();
         if(!isset($_SESSION['email']) && !isset($_SESSION['password'])){
             // если нет, то выводим блок с ссылками на страницу регистрации и авторизации
             ?>
-            <div id="link_register">
-                <a href="./form_register.php">Регистрация</a>
-            </div>
+
 
             <div id="link_auth">
                 <a href="./form_auth.php">Авторизация</a>
@@ -127,6 +125,16 @@ session_start();
         }else{
             //Если пользователь авторизован, то выводим ссылку Выход
             ?>
+            <?php
+            if(($_SESSION['fk_Role_id'])==1) {
+                ?>
+                <div id="link_register">
+                    <a href="./form_register.php">Регистрация</a>
+                </div>
+                <?php
+            }
+                ?>
+
             <div id="link_logout">
                 <a href="./logout.php">Выход</a>
             </div>

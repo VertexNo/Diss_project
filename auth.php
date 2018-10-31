@@ -161,9 +161,11 @@ if(isset($_POST["btn_submit_auth"]) && !empty($_POST["btn_submit_auth"])){
             if($result_query_select->num_rows == 1){
 
                 // ≈сли введенные данные совпадают с данными из базы, то сохран€ем логин и пароль в массив сессий.
+                $result_role_id = $mysqli->query("SELECT fk_Role_id FROM `users` WHERE email = '".$email."' AND password = '".$password."'");
+                $row_role_id = mysqli_fetch_assoc($result_role_id);
                 $_SESSION['email'] = $email;
                 $_SESSION['password'] = $password;
-
+                $_SESSION['fk_Role_id'] = $row_role_id['fk_Role_id'];
                 //¬озвращаем пользовател€ на главную страницу
                 header("HTTP/1.1 301 Moved Permanently");
                 header("Location: ".$address_site."/index.php");
