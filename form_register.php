@@ -5,8 +5,11 @@
  * Date: 029 29.10.18
  * Time: 21:35
  */
+require_once("dbconnect.php"); // подключаем содержимое файла text.php
 require_once("header.php");
+
 ?>
+
 <!-- Блок для вывода сообщений -->
 <div class="block_for_messages">
     <?php
@@ -76,6 +79,26 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_R
                         </p>
                     </td>
                 </tr>
+
+                <tr>
+                    <td> Роль регистрируемого пользователя: </td>
+                    <td>
+                        <select name="option1" class="cellbut">
+                            <?php //Option для выбора пользователя
+
+                            $result_query_roles = $mysqli->query("select Role_name from roles where Role_id >0");
+                            $result_query_num_roles = mysqli_num_rows($result_query_roles);
+                            for ($i=0; $i <$result_query_num_roles; $i++)
+                            {
+                                $result = mysqli_fetch_array($result_query_roles);
+                                echo '<option required="required"> '.$result['Role_name'].' </option>';
+
+                            }
+                            ?>
+                            </select>
+                    </td>
+                </tr>
+
                 <tr>
                     <td colspan="2">
                         <input type="submit" name="btn_submit_register" value="Зарегистрироватся!">
@@ -84,6 +107,9 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_R
                 </tbody></table>
         </form>
     </div>
+    <?php
+    $mysqli->close();
+    ?>
     <?php
 }else{
     ?>

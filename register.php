@@ -6,10 +6,11 @@
  * Time: 21:44
  */
 //Запускаем сессию
+require_once("dbconnect.php");
 session_start();
 
 //Добавляем файл подключения к БД
-require_once("dbconnect.php");
+
 
 //Объявляем ячейку для добавления ошибок, которые могут возникнуть при обработке формы.
 $_SESSION["error_messages"] = '';
@@ -236,9 +237,15 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             //Останавливаем  скрипт
             exit();
         }
+        //if ($mysqli->connect_errno) { die('Ошибка соединения: ' . $mysqli->connect_error); }else{echo 'Connect true';}
 
+        $rolename = trim($_POST["option1"]);
+        $rolename = htmlspecialchars($rolename, ENT_QUOTES);
+        $result_query_Role_id = $mysqli->query("select Role_id from Roles where Role_name='".$rolename."'");
+        $roleid = mysqli_fetch_assoc($result_query_Role_id);
+        $resultroleid = $roleid['Role_id'];
 //Запрос на добавления пользователя в БД
-        $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."')");
+         $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password, fk_Role_id) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."'," .$resultroleid. ")");
 
         if(!$result_query_insert){
             // Сохраняем в сессию сообщение об ошибке.
