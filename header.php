@@ -12,6 +12,8 @@ session_start();
 <head>
     <title>Система подачи и обработки обращений</title>
     <meta charset="windows-1251">
+    <!--<link rel="stylesheet" type="text/css" href="css/styles.css">-->
+    <link rel="stylesheet" type="text/css" href="css/navigation.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -106,9 +108,8 @@ session_start();
 <body>
 
 <div id="header">
-    <h2>Шапка сайта</h2>
-
-    <a href="./index.php">Главная</a>
+    <ul>
+        <li><a href="./index.php">Главная</a></li>
 
     <div id="auth_block">
         <?php
@@ -117,10 +118,8 @@ session_start();
             // если нет, то выводим блок с ссылками на страницу регистрации и авторизации
             ?>
 
+            <li> <a href="./form_auth.php">Авторизация</a></li>
 
-            <div id="link_auth">
-                <a href="./form_auth.php">Авторизация</a>
-            </div>
             <?php
         }else{
             //Если пользователь авторизован, то выводим ссылку Выход
@@ -128,16 +127,15 @@ session_start();
             <?php
             if(($_SESSION['fk_Role_id'])==1) {
                 ?>
-                <div id="link_register">
-                    <a href="./form_register.php">Регистрация</a>
-                </div>
+
+                    <li> <a href="./form_register.php">Регистрация</a></li>
+
+
                 <?php
             }
                 ?>
+            <li><a href="./logout.php">Выход</a></li>
 
-            <div id="link_logout">
-                <a href="./logout.php">Выход</a>
-            </div>
             <?php
         }
         ?>
