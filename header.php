@@ -111,24 +111,26 @@ session_start();
     <ul>
         <li><a href="./index.php">Главная</a></li>
 
-    <div id="auth_block">
+
         <?php
         //Проверяем авторизован ли пользователь
         if(!isset($_SESSION['email']) && !isset($_SESSION['password'])){
             // если нет, то выводим блок с ссылками на страницу регистрации и авторизации
             ?>
-
+            <div id="auth_block">
             <li> <a href="./form_auth.php">Авторизация</a></li>
 
             <?php
         }else{
             //Если пользователь авторизован, то выводим ссылку Выход
             ?>
+                <li> <a href="./form_request.php">Обращения</a></li>
+                <div id="auth_block">
             <?php
             if(($_SESSION['fk_Role_id'])==1) {
                 ?>
 
-                    <li> <a href="./form_register.php">Регистрация</a></li>
+                    <li> <a href="./form_register.php">Регистрация нового пользователя</a></li>
 
 
                 <?php

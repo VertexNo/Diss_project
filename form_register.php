@@ -62,7 +62,7 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_R
 
 
                 <div class="blockinput">
-                    <input type="text" name="captcha" placeholder="Проверочный код" required="required">
+                    <input type="text" name="captcha" placeholder="Проверочный код" required="required" autocomplete="off">
                     <img src="captcha.php" alt="Капча" />
                 </div>
 
