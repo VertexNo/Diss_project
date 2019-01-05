@@ -31,12 +31,15 @@ require_once("header.php");
 <?php
 //Проверяем, если пользователь не авторизован, то выводим форму регистрации,
 //иначе выводим сообщение о том, что он уже зарегистрирован
-if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_Role_id'])==1){ //убрал "НЕ"
+if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk_Role_id'])==1*/){ //убрал "НЕ"
     ?>
 
     <br><h1>Авторизованы</h1>
 
     <?php
+    echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
+    echo 'user_id'.$_SESSION['user_id'];
+
     $mysqli->close();
     ?>
     <?php
