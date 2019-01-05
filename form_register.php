@@ -65,7 +65,23 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_R
                     <input type="text" name="captcha" placeholder="Проверочный код" required="required" autocomplete="off">
                     <img src="captcha.php" alt="Капча" />
                 </div>
+                <div class="blockinput" >
+                    <span class="custom-dropdown">
+                    <select name="option2" class="cellbut">
+                        <?php //Option для выбора организации
 
+                        $result_query_organisations = $mysqli->query("select organisation_name from organisations where id_organisation >0");
+                        $result_query_num_organisations = mysqli_num_rows($result_query_organisations);
+                        for ($i=0; $i <$result_query_num_organisations; $i++)
+                        {
+                            $result = mysqli_fetch_array($result_query_organisations);
+                            echo '<option required="required"> '.$result['organisation_name'].' </option>';
+
+                        }
+                        ?>
+                    </select>
+                    </span>
+                </div>
                 <div class="blockinput" >
                     <span class="custom-dropdown">
                     <select name="option1" class="cellbut">

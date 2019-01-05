@@ -144,3 +144,6 @@ session_start();
     </div>
     <div class="clear"></div>
 </div>
+    </ul>
+</div>
+</body>

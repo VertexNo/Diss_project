@@ -244,8 +244,14 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
         $result_query_Role_id = $mysqli->query("select Role_id from Roles where Role_name='".$rolename."'");
         $roleid = mysqli_fetch_assoc($result_query_Role_id);
         $resultroleid = $roleid['Role_id'];
+
+        $organisation_name = trim($_POST["option2"]);
+        $organisation_name = htmlspecialchars($organisation_name, ENT_QUOTES);
+        $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='".$organisation_name."'");
+        $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
+        $resultidorganisationid = $idorganisation['id_organisation'];
 //Запрос на добавления пользователя в БД
-         $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password, fk_Role_id) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."'," .$resultroleid. ")");
+         $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password, fk_Role_id,fk_organisation_id) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."'," .$resultroleid.",".$resultidorganisationid.")");
 
         if(!$result_query_insert){
             // Сохраняем в сессию сообщение об ошибке.

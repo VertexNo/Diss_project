@@ -1,3 +1,9 @@
+body
+{
+
+    background:url(../background/grey-tissue.jpg) repeat;
+
+}
 
 .clear{
     clear: both;
