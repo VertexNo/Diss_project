@@ -75,3 +75,18 @@ body
 #authorized h2{
     text-align: center;
 }
+/*Оформление для таблицы*/
+table {width: 100%; border-collapse: collapse;}
+table thead tr {color: #ffffff; font-weight: bold; background: #3f4741; }
+table thead tr td {border: 2px solid #01ab73; }
+table tbody tr td {border: 2px solid #e8e9eb; }
+table tbody tr:nth-child(1n) {background: #e0e4e0;}
+table tbody tr:nth-child(2n) {background: #f4f4f4;}
+table tbody tr:hover {background: #ebffe8;}
+table th{
+    color: #ffffff; font-weight: bold; background: #3f4741;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 45px;
+}
+

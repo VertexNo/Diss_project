@@ -36,12 +36,30 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
 
     <br><h1>Авторизованы</h1>
 
+
     <!--/*Старт формы обращений*/-->
+    <table>
+        <thead><!-- необязательный тег-->
+        <tr>
+            <th>№ обращения</th>
+            <th>Заголовок</th>
+            <th>Краткое описание</th>
+            <th>Дата создания</th>
+            <th>Дата решения</th>
+            <th>Обратился</th>
+            <th>Исполнитель</th>
+            <th>Обратившаяся организация</th>
+            <th>Статус</th>
+            <th>Приоритет</th>
+            <th>Тип услуги</th>
+        </tr>
+        </thead>
+        <tbody><!--необязательный тег-->
     <?php //Option для выбора организации
 
     $result_query_requests = $mysqli->query("
-select request_id,caption,short_description,date_create,IFNULL(date_resolve, 'Нет данных')
-, concat(userCreate.last_name,\" \",userCreate.first_name) as 'Создал', concat(userRespons.last_name, \" \",userCreate.first_name) as 'Ответственный',org.organisation_name,status.status_name,priority.priority_name,service.service_name
+select req.request_id as request_id,req.caption as caption,req.short_description as short_description,req.date_create as date_create,IFNULL(req.date_resolve, 'Не решена') as date_resolve
+, concat(userCreate.last_name,\" \",userCreate.first_name) as userCreate, concat(userRespons.last_name, \" \",userCreate.first_name) as userRespons,org.organisation_name as organisation_name,status.status_name as status_name,priority.priority_name as priority_name,service.service_name as service_name
 from requests req
 inner join users userCreate on req.fk_create_user_id = userCreate.user_id
 inner join users userRespons on req.fk_responsible_user_id = userRespons.user_id
@@ -56,26 +74,68 @@ where request_id > 0
     {
         $result = mysqli_fetch_array($result_query_requests);
 
-        echo 'RequestId = '.$result['request_id'];
+        //echo 'RequestId = '.$result['request_id'];
     ?>
-    <tr>
+    <tr onclick="window.location='./request_edit.php'">
         <td>
-            <input class="cellbut" type="submit" name="Requests_id" value=<?php echo $result['request_id']?>>
+            <?php echo $result['request_id']?>
+        </td>
+
+        <td>
+            <?php echo $result['caption']?>
+        </td>
+
+        <td>
+            <?php echo $result['short_description']?>
+        </td>
+
+        <td>
+            <?php echo $result['date_create']?>
+        </td>
+
+        <td>
+            <?php echo $result['date_resolve']?>
+        </td>
+
+        <td>
+           <?php echo $result['userCreate']?>
+        </td>
+
+        <td>
+            <?php echo $result['userRespons']?>
+        </td>
+
+
+        <td>
+           <?php echo $result['organisation_name']?>
+        </td>
+
+        <td>
+            <?php echo $result['status_name']?>
+        </td>
+
+        <td>
+            <?php echo $result['priority_name']?>
+        </td>
+
+        <td>
+            <?php echo $result['service_name']?>
         </td>
 
     </tr>
     <?php
     }
     ?>
-
-    <table>
-        <thead><!-- необязательный тег-->
+        </tbody>
+    </table>
+   <!-- <table>
+        <thead>
         <tr>
             <th>Ячейка заголовка</th>
             <th>Ячейка заголовка</th>
         </tr>
         </thead>
-        <tbody><!--необязательный тег-->
+        <tbody>
         <tr>
             <td>Ячейка данных</td>
             <td>Ячейка данных</td>
@@ -85,7 +145,7 @@ where request_id > 0
             <td>Ячейка данных</td>
         </tr>
         </tbody>
-    </table>
+    </table> -->
 
 
     <!--Конец формы обращений -->
