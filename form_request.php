@@ -76,7 +76,7 @@ where request_id > 0
 
         //echo 'RequestId = '.$result['request_id'];
     ?>
-    <tr onclick="window.location='./request_edit.php'">
+    <tr onclick="window.location='./form_edit_request.php?request=<?php echo $result['request_id'] ?>'"> <!--Передаем ID обращения-->
         <td>
             <?php echo $result['request_id']?>
         </td>
