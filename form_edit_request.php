@@ -109,7 +109,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <select name="option3" class="cellbut">
                 <?php //Option для выбора пользователя
 
-                $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name) as userRespons from users where user_id >0");
+                $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name) as userRespons from users where user_id >0 and fk_role_id =2");
                 $result_query_num_users = mysqli_num_rows($result_query_users);
                 for ($i=0; $i <$result_query_num_users; $i++)
                 { /*Сделать проверку на текущий статус в заявке и выводимыми статусами*/

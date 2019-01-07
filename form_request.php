@@ -58,8 +58,22 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
     <?php //Option для выбора организации
 
     $result_query_requests = $mysqli->query("
-select req.request_id as request_id,req.caption as caption,req.short_description as short_description,req.date_create as date_create,IFNULL(req.date_resolve, 'Не решена') as date_resolve
-, concat(userCreate.last_name,\" \",userCreate.first_name) as userCreate, concat(userRespons.last_name, \" \",userCreate.first_name) as userRespons,org.organisation_name as organisation_name,status.status_name as status_name,priority.priority_name as priority_name,service.service_name as service_name
+select req.request_id as request_id,
+req.caption as caption,
+req.short_description as short_description,
+req.date_create as date_create,
+IFNULL(req.date_resolve, 'Не решена') as date_resolve, 
+concat(userCreate.last_name,\" \",userCreate.first_name) as userCreate, 
+userCreate.user_id as userCreateID, 
+concat(userRespons.last_name, \" \",userCreate.first_name) as userRespons,
+userRespons.user_id as userResponsID,
+org.organisation_name as organisation_name,
+status.status_name as status_name,
+status.status_id as status_id,
+priority.priority_name as priority_name,
+priority.priority_id as priority_id,
+service.service_name as service_name,
+service.service_id as service_id
 from requests req
 inner join users userCreate on req.fk_create_user_id = userCreate.user_id
 inner join users userRespons on req.fk_responsible_user_id = userRespons.user_id
@@ -68,6 +82,7 @@ inner join status status on req.fk_status_id = status.status_id
 inner join priority priority on priority.priority_id = req.fk_priority_id
 inner join service service on req.fk_service_id = service.service_id
 where request_id > 0
+order by status_id desc
 ");
     $result_query_num_requests = mysqli_num_rows($result_query_requests);
     for ($i=0; $i <$result_query_num_requests; $i++)
