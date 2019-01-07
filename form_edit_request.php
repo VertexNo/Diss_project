@@ -9,6 +9,7 @@ require_once("dbconnect.php"); // подключаем содержимое файла text.php
 require_once("header.php");
 
 ?>
+<link rel="stylesheet" type="text/css" href="css/create_edit_request_style.css">
 <div class="block_for_messages">
     <?php
     //Если в сессии существуют сообщения об ошибках, то выводим их
@@ -33,12 +34,197 @@ require_once("header.php");
 //иначе выводим сообщение о том, что он уже зарегистрирован
 if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk_Role_id'])==1*/){ //убрал "НЕ"
     ?>
-<h1> Авторизованы</h1>
 
     <?php
     $request_id = $_GET['request'];
-    echo 'Requestid='.$request_id;
+
+    $result_query_select = $mysqli->query("select req.request_id as request_id,
+req.caption as caption,
+req.short_description as short_description,
+req.description as description,
+req.date_create as date_create,
+IFNULL(req.date_resolve, 'Не решена') as date_resolve, 
+concat(userCreate.last_name,\" \",userCreate.first_name) as userCreate, 
+userCreate.user_id as userCreateID, 
+concat(userRespons.last_name, \" \",userCreate.first_name) as userRespons,
+userRespons.user_id as userResponsID, 
+org.organisation_name as organisation_name,
+status.status_name as status_name,
+status.status_id as status_id,
+priority.priority_name as priority_name,
+priority.priority_id as priority_id,
+service.service_name as service_name,
+service.service_id as service_id
+from requests req
+inner join users userCreate on req.fk_create_user_id = userCreate.user_id
+inner join users userRespons on req.fk_responsible_user_id = userRespons.user_id
+inner join organisations org on org.id_organisation = userCreate.fk_organisation_id
+inner join status status on req.fk_status_id = status.status_id
+inner join priority priority on priority.priority_id = req.fk_priority_id
+inner join service service on req.fk_service_id = service.service_id
+where request_id > 0 and request_id ='".$request_id."'");
+    if($result_query_select->num_rows == 1){
+
+        $row_request= mysqli_fetch_assoc($result_query_select);
+
+        /*$_SESSION['fk_Role_id'] = $row_user['fk_Role_id'];*/
+
+       /* header("HTTP/1.1 301 Moved Permanently");
+        header("Location: ".$address_site."/index.php");*/
+
+    }else{
+
+        // Сохраняем в сессию сообщение об ошибке.
+        $_SESSION["error_messages"] .= "<p class='mesage_error' >Данное обращение было удалено</p>";
+
+        //Возвращаем пользователя на страницу авторизации
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: ".$address_site."/form_auth.php");
+
+        //Останавливаем скрипт
+        exit();
+    }
+
     ?>
+    <!-- Сделать проверку. Если в статусе закрыто - то сделать поля неактивными -->
+    <br><h1> Авторизованы</h1>
+    <form id="form_request" method="post">
+        Редактирование обращения
+        <div class="pole">
+            <label>Заголовок:</label>
+            <div class="input"><input type="text" id="caption" value="<?php echo $row_request['caption'] ?>"/></div>
+        </div>
+
+        <div class="pole">
+            <label>Краткое описание:</label>
+            <div class="input"><input type="text"  id="short_description" value="<?php echo $row_request['short_description'] ?>"/></div>
+        </div>
+        <div class="pole">
+            <label>Полное описание проблемы:</label>
+            <div class="input"><textarea id="description"> <?php echo $row_request['description'] ?> </textarea></div>
+
+        </div>
+        <div class="pole">
+            <label>Исполнитель:</label>
+            <select name="option3" class="cellbut">
+                <?php //Option для выбора пользователя
+
+                $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name) as userRespons from users where user_id >0");
+                $result_query_num_users = mysqli_num_rows($result_query_users);
+                for ($i=0; $i <$result_query_num_users; $i++)
+                { /*Сделать проверку на текущий статус в заявке и выводимыми статусами*/
+                    $result = mysqli_fetch_array($result_query_users);
+
+                    if($row_request['userCreateID'] == $result['user_id'])
+                    {
+                        echo '<option required="required" selected> ' . $result['userRespons'] . '</option>';
+                    }
+                    else {
+                        echo '<option required="required"> ' . $result['userRespons'] . '</option>';
+                    }
+
+                }
+                ?>
+            </select>
+        </div>
+
+        <div class="pole">
+            <label>Статус:</label>
+            <select name="option1" class="cellbut">
+                <?php //Option для выбора статуса
+
+                $result_query_status = $mysqli->query("select status_id,status_name from status where status_iD >0");
+                $result_query_num_status = mysqli_num_rows($result_query_status);
+                for ($i=0; $i <$result_query_num_status; $i++)
+                { /*Сделать проверку на текущий статус в заявке и выводимыми статусами*/
+                    $result = mysqli_fetch_array($result_query_status);
+
+                    if($row_request['status_id'] == $result['status_id'])
+                    {
+                        echo '<option required="required" selected> '.$result['status_name'].'</option>';
+                    }
+                    else {
+                        echo '<option required="required"> '.$result['status_name'].'</option>';
+                    }
+
+
+                }
+                ?>
+            </select>
+        </div>
+        <div class="pole">
+            <label>Приоритет:</label>
+            <select name="option2" class="cellbut">
+                <?php //Option для выбора пользователя
+
+                $result_query_priority = $mysqli->query("select priority_id,priority_name from priority where priority_id >0");
+                $result_query_num_priority = mysqli_num_rows($result_query_priority);
+                for ($i=0; $i <$result_query_num_priority; $i++)
+                { /*Сделать проверку на текущий приоритет в заявке и выводимыми приоритетами*/
+                    $result = mysqli_fetch_array($result_query_priority);
+
+                    if($row_request['priority_id'] == $result['priority_id'])
+                    {
+                        echo '<option required="required" selected> '.$result['priority_name'].'</option>';
+                    }
+                    else {
+                        echo '<option required="required"> '.$result['priority_name'].'</option>';
+                    }
+
+
+                }
+                ?>
+            </select>
+        </div>
+        <div class="pole">
+            <label>Тип проблемы / услуги:</label>
+            <select name="option4" class="cellbut">
+                <?php //Option для выбора услуги / проблемы
+
+
+                $result = $mysqli->query("select service_id,service_name,fk_service_id from service where service_id >0");
+
+                $cats = array(); // тут будет наш массив с категориями каталога
+                // в цикле формируем нужный нам массив
+                while($cat =  mysqli_fetch_assoc($result))
+                    $cats[$cat['fk_service_id']][] =  $cat;
+                // далее наша главная, рекурсивная функция, которая сформирует дерево категорий
+
+                function create_tree ($cats,$fk_service_id , $row_request){
+                    if(is_array($cats) and  isset($cats[$fk_service_id])){
+                        $tree = '';
+                        foreach($cats[$fk_service_id] as $cat){
+                            if($row_request == $cat['service_id'])
+                            {
+                                $tree .= "<option required=\"required\" selected>".$cat['service_name'];
+                            }
+                            else{
+                                $tree .= "<option required=\"required\" >".$cat['service_name'];
+                            }
+
+                            $tree .= '</option>';
+                            $tree .=  create_tree ($cats,$cat['service_id'], $row_request);
+
+                        }
+                    }
+                    else return null;
+                    return $tree;
+                }
+
+                // вызываем функцию и строим дерево
+                echo create_tree ($cats, 0, $row_request['service_id']);
+
+                ?>
+            </select>
+        </div>
+
+
+        <div class="sub">
+            <button type="submit" name="update">Сохранить</button>
+            <button type="submit" name="cancel">Отмена</button>
+
+        </div>
+    </form>
 
     <?php
     echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
@@ -46,6 +232,7 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
 
     $mysqli->close();
     ?>
+
     <?php
 }else{
     ?>
