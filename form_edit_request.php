@@ -89,20 +89,23 @@ where request_id > 0 and request_id ='".$request_id."'");
     <!-- Сделать проверку. Если в статусе закрыто - то сделать поля неактивными -->
     <br><h1> Авторизованы</h1>
     <form id="form_request" method="post">
+        <div class="input">
         Редактирование обращения
         <div class="pole">
             <label>Заголовок:</label>
-            <div class="input"><input type="text" id="caption" value="<?php echo $row_request['caption'] ?>"/></div>
+            <div class="input"><input type="text" id="caption" required="required" name="caption" value="<?php echo $row_request['caption'] ?>"/></div>
+            <span id="valid_caption_message" class="mesage_error"></span>
         </div>
 
         <div class="pole">
             <label>Краткое описание:</label>
-            <div class="input"><input type="text"  id="short_description" value="<?php echo $row_request['short_description'] ?>"/></div>
+            <div class="input"><input type="text"  id="short_description" required="required" name="short_description" value="<?php echo $row_request['short_description'] ?>"/></div>
+            <span id="valid_short_description_message" class="mesage_error"></span>
         </div>
         <div class="pole">
             <label>Полное описание проблемы:</label>
-            <div class="input"><textarea id="description"> <?php echo $row_request['description'] ?> </textarea></div>
-
+            <div class="input"><textarea id="description" required="required" name="description"> <?php echo $row_request['description'] ?> </textarea></div>
+            <span id="valid_description_message" class="mesage_error"></span>
         </div>
         <div class="pole">
             <label>Исполнитель:</label>
@@ -217,10 +220,10 @@ where request_id > 0 and request_id ='".$request_id."'");
                 ?>
             </select>
         </div>
-
+        </div>
 
         <div class="sub">
-            <button type="submit" name="update">Сохранить</button>
+            <button type="submit" name="update" class="buttonUpd">Сохранить</button>
             <button type="submit" name="cancel">Отмена</button>
 
         </div>

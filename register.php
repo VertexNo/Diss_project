@@ -204,7 +204,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
         }
 
 
-        if(isset($_POST["password"])){
+        if(isset($_POST["password"]) && $_POST["password"].length>= 6){
 
             //Обрезаем пробелы с начала и с конца строки
             $password = trim($_POST["password"]);
@@ -216,7 +216,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 $password = md5($password."top_secret");
             }else{
                 // Сохраняем в сессию сообщение об ошибке.
-                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Ваш пароль</p>";
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Ваш пароль. Пароль не может быть меньше 6 символов</p>";
 
                 //Возвращаем пользователя на страницу регистрации
                 header("HTTP/1.1 301 Moved Permanently");

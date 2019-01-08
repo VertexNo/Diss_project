@@ -91,6 +91,7 @@ session_start();
                         // Дезактивируем кнопку отправки
                         $('input[type=submit]').attr('disabled', true);
 
+
                     }else{
                         // Убираем сообщение об ошибке
                         $('#valid_password_message').text('');
@@ -100,6 +101,84 @@ session_start();
                     }
                 }else{
                     $('#valid_password_message').text('Введите пароль');
+                }
+            });
+
+            //================ Проверка длины заголовка обращения ==================
+            var caption = $('input[name=caption]');
+
+            caption.blur(function(){
+                if(caption.val() != ''){
+
+                    //Если длина введенного заголовка меньше 3 символов, то выводим сообщение об ошибке
+                    if(caption.val().length < 3){
+                        //Выводим сообщение об ошибке
+                        $('#valid_caption_message').text('Минимальная длина заголовка 3 символа');
+
+                        // Дезактивируем кнопку отправки
+                        $('button[type=submit]').attr('disabled', true);
+
+                    }else{
+                        // Убираем сообщение об ошибке
+                        $('#valid_caption_message').text('');
+
+                        //Активируем кнопку отправки
+                        $('button[type=submit]').attr('disabled', false);
+                    }
+                }else{
+                    $('#valid_caption_message').text('Введите заголовок');
+                }
+            });
+
+            //================ Проверка длины краткого описания проблемы обращения ==================
+            var short_description = $('input[name=short_description]');
+
+            short_description.blur(function(){
+                if(short_description.val() != ''){
+
+                    //Если длина введенного заголовка меньше 3 символов, то выводим сообщение об ошибке
+                    if(short_description.val().length < 3){
+                        //Выводим сообщение об ошибке
+                        $('#valid_short_description_message').text('Минимальная длина краткого описания проблемы - 3 символа');
+
+                        // Дезактивируем кнопку отправки
+                        $('button[type=submit]').attr('disabled', true);
+
+                    }else{
+                        // Убираем сообщение об ошибке
+                        $('#valid_short_description_message').text('');
+
+                        //Активируем кнопку отправки
+                        $('button[type=submit]').attr('disabled', false);
+                    }
+                }else{
+                    $('#valid_short_description_message').text('Введите краткое описание проблемы');
+                }
+            });
+
+            //================ Проверка длины описания проблемы обращения ==================
+            var description = $('input[name=description]');
+
+            description.blur(function(){
+                if(description.val() != ''){
+
+                    //Если длина введенного заголовка меньше 3 символов, то выводим сообщение об ошибке
+                    if(description.val().length < 3){
+                        //Выводим сообщение об ошибке
+                        $('#valid_description_message').text('Минимальная длина описания проблемы - 3 символа');
+
+                        // Дезактивируем кнопку отправки
+                        $('button[type=submit]').attr('disabled', true);
+
+                    }else{
+                        // Убираем сообщение об ошибке
+                        $('#valid_description_message').text('');
+
+                        //Активируем кнопку отправки
+                        $('input[type=submit]').attr('disabled', false);
+                    }
+                }else{
+                    $('#valid_description_message').text('Введите описание проблемы');
                 }
             });
         });
