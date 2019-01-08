@@ -223,8 +223,8 @@ where request_id > 0 and request_id ='".$request_id."'");
         </div>
 
         <div class="sub">
-            <button type="submit" name="update" class="buttonUpd">Сохранить</button>
-            <button type="submit" name="cancel">Отмена</button>
+            <button type="submit" name="btn_update_request" class="buttonUpd">Сохранить</button>
+            <button type="submit" name="btn_cancel_edit_request">Отмена</button>
 
         </div>
     </form>

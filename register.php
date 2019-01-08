@@ -204,8 +204,8 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
         }
 
 
-        if(isset($_POST["password"]) && $_POST["password"].length>= 6){
-
+        if(isset($_POST["password"]) && strlen($_POST["password"])>=6){
+//echo $_POST["password"].length;
             //Обрезаем пробелы с начала и с конца строки
             $password = trim($_POST["password"]);
 
@@ -220,7 +220,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
                 //Возвращаем пользователя на страницу регистрации
                 header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$address_site."/form_register.php");
+               header("Location: ".$address_site."/form_register.php");
 
                 //Останавливаем  скрипт
                 exit();
@@ -237,6 +237,147 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             //Останавливаем  скрипт
             exit();
         }
+
+
+        //Проверка на существование роли
+        if(isset($_POST["option1"])){
+
+            //Обрезаем пробелы с начала и с конца строки
+            $role = trim($_POST["option1"]);
+
+            if(!empty($role)){
+
+                $role = htmlspecialchars($role, ENT_QUOTES);
+
+//Проверяем нет ли уже такого адреса в БД.
+                $result_query = $mysqli->query("select Role_id from Roles where Role_name='".$role."'");
+
+//Если кол-во полученных строк меньше единицы, значит такой роли нет
+                if($result_query->num_rows < 1){
+
+                    //Если полученный результат не равен false
+                    if(($row = $result_query->fetch_assoc()) != false){
+
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Такой роли не существует!</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: ".$address_site."/form_register.php");
+
+                    }else{
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: ".$address_site."/form_register.php");
+                    }
+
+                    /* закрытие выборки */
+                    $result_query->close();
+
+                    //Останавливаем  скрипт
+                    exit();
+                }
+
+                /* закрытие выборки */
+                $result_query->close();
+
+            }else{
+                // Сохраняем в сессию сообщение об ошибке.
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите роль пользователя</p>";
+
+                //Возвращаем пользователя на страницу регистрации
+                header("HTTP/1.1 301 Moved Permanently");
+                header("Location: ".$address_site."/form_register.php");
+
+                //Останавливаем  скрипт
+                exit();
+            }
+
+        }else{
+            // Сохраняем в сессию сообщение об ошибке.
+            $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода роли</p>";
+
+            //Возвращаем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: ".$address_site."/form_register.php");
+
+            //Останавливаем  скрипт
+            exit();
+        }
+
+        //Проверка на существование организации
+        if(isset($_POST["option2"])){
+
+            //Обрезаем пробелы с начала и с конца строки
+            $organisation = trim($_POST["option2"]);
+
+            if(!empty($organisation)){
+
+                $organisation = htmlspecialchars($organisation, ENT_QUOTES);
+
+//Проверяем нет ли уже такого адреса в БД.
+                $result_query = $mysqli->query("select id_organisation from organisations where organisation_name='".$organisation."'");
+
+//Если кол-во полученных строк меньше единицы, значит такой организации нет
+                if($result_query->num_rows < 1){
+
+                    //Если полученный результат не равен false
+                    if(($row = $result_query->fetch_assoc()) != false){
+
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Такой организации не существует!</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: ".$address_site."/form_register.php");
+
+                    }else{
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: ".$address_site."/form_register.php");
+                    }
+
+                    /* закрытие выборки */
+                    $result_query->close();
+
+                    //Останавливаем  скрипт
+                    exit();
+                }
+
+                /* закрытие выборки */
+                $result_query->close();
+
+            }else{
+                // Сохраняем в сессию сообщение об ошибке.
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите организацию пользователя</p>";
+
+                //Возвращаем пользователя на страницу регистрации
+                header("HTTP/1.1 301 Moved Permanently");
+                header("Location: ".$address_site."/form_register.php");
+
+                //Останавливаем  скрипт
+                exit();
+            }
+
+        }else{
+            // Сохраняем в сессию сообщение об ошибке.
+            $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода Организации</p>";
+
+            //Возвращаем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: ".$address_site."/form_register.php");
+
+            //Останавливаем  скрипт
+            exit();
+        }
+
+
         //if ($mysqli->connect_errno) { die('Ошибка соединения: ' . $mysqli->connect_error); }else{echo 'Connect true';}
 
         $rolename = trim($_POST["option1"]);
