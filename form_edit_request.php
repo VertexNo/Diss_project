@@ -91,6 +91,13 @@ where request_id > 0 and request_id ='".$request_id."'");
     <form action="update_request.php" id="form_request" method="post">
         <div class="input">
         Редактирование обращения
+            <?php
+            if($row_request['status_id']==5)
+            {
+                echo '<br> Данное обрашение было закрыто. Редактирование запрещено <br> 
+чтобы редактировать обращение, переоткройте его соответсвутющей кнопкой';
+            }
+            ?>
         <div class="pole">
                 <label>Номер:</label>
                 <div class="input"><input readonly type="text" id="request_id" required="required" name="request_id" value="<?php echo $request_id ?>"/></div>
@@ -134,7 +141,17 @@ where request_id > 0 and request_id ='".$request_id."'");
         </div>
         <div class="pole">
             <label>Исполнитель:</label>
-            <select name="option3" class="cellbut">
+            <?php
+            if($row_request['status_id']==5)
+            {
+                echo '<select name="option3" class="cellbut" disabled>';
+            }
+            else
+            {
+                echo '<select name="option3" class="cellbut">';
+            }
+            ?>
+            <!--<select name="option3" class="cellbut">-->
                 <?php //Option для выбора пользователя
 
                 $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userRespons from users where user_id >0 and fk_role_id =2");
@@ -158,7 +175,17 @@ where request_id > 0 and request_id ='".$request_id."'");
 
         <div class="pole">
             <label>Статус:</label>
-            <select name="option1" class="cellbut">
+            <?php
+            if($row_request['status_id']==5)
+            {
+                echo '<select name="option1" class="cellbut" disabled>';
+            }
+            else
+            {
+                echo '<select name="option1" class="cellbut">';
+            }
+            ?>
+            <!--<select name="option1" class="cellbut">-->
                 <?php //Option для выбора статуса
 
                 $result_query_status = $mysqli->query("select status_id,status_name from status where status_iD >0");
@@ -182,7 +209,17 @@ where request_id > 0 and request_id ='".$request_id."'");
         </div>
         <div class="pole">
             <label>Приоритет:</label>
-            <select name="option2" class="cellbut">
+            <?php
+            if($row_request['status_id']==5)
+            {
+                echo ' <select name="option2" class="cellbut" disabled>';
+            }
+            else
+            {
+                echo '<select name="option2" class="cellbut">';
+            }
+            ?>
+            <!--<select name="option2" class="cellbut">-->
                 <?php //Option для выбора приоритета
 
                 $result_query_priority = $mysqli->query("select priority_id,priority_name from priority where priority_id >0");
@@ -206,7 +243,17 @@ where request_id > 0 and request_id ='".$request_id."'");
         </div>
         <div class="pole">
             <label>Тип проблемы / услуги:</label>
-            <select name="option4" class="cellbut">
+            <?php
+            if($row_request['status_id']==5)
+            {
+                echo '<select name="option4" class="cellbut" disabled>';
+            }
+            else
+            {
+                echo '<select name="option4" class="cellbut">';
+            }
+            ?>
+            <!--<select name="option4" class="cellbut">-->
                 <?php //Option для выбора услуги / проблемы
 
 
@@ -251,7 +298,16 @@ where request_id > 0 and request_id ='".$request_id."'");
             <input type="submit" name="btn_update_request" value="Сохранить">
             <input type="submit" name="cancel_request" value="Отмена">
             <input type="reset" name="reset_request" value="Сброс">
-
+            <?php
+            if($row_request['status_id']==5)
+            {
+                echo '<input type="submit" name="reopen_request" value="Переоткрыть">';
+            }
+            else
+            {
+                echo '<input type="submit" name="reopen_request" value="Переоткрыть" hidden>';
+            }
+            ?>
 
         </div>
     </form>
