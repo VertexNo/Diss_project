@@ -21,6 +21,11 @@ $_SESSION["success_messages"] = '';
 /*
         Проверяем была ли отправлена форма, то есть была ли нажата кнопка зарегистрироваться. Если да, то идём дальше, если нет, то выведем пользователю сообщение об ошибке, о том что он зашёл на эту страницу напрямую.
     */
+if(isset($_POST["cancel_request"]) && !empty($_POST["cancel_request"])){
+
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: " . $address_site . "/form_request.php");
+}
 if(isset($_POST["reopen_request"]) && !empty($_POST["reopen_request"])){
     $result_query = $mysqli->query("update requests set fk_status_id = 1  where request_id='".$_POST["request_id"]."'");
     if (!$result_query) {
