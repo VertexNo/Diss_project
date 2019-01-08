@@ -9,7 +9,7 @@ require_once("dbconnect.php"); // подключаем содержимое файла text.php
 
 ?>
 <?php
-
+/*
 
 $result = $mysqli->query("select service_id,service_name,fk_service_id from service where service_id >0");
 
@@ -33,7 +33,17 @@ return $tree;
 }
 
 // вызываем функцию и строим дерево
-echo create_tree ($cats, 0);
+echo create_tree ($cats, 0);*/
+$user = ' t2i@t2i.ru Тестовый инженер (ti@ti.ru)';
+
+
+
+echo 'USEREMAILbefore='.$user;
+$user=preg_match_all("/\(([^()]*)\)/", $user, $matches);
+$user = $matches[0][0];
+$user=preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i",$user, $matches2);
+$user=$matches2[0][0];
+echo 'USEREMAIL2='.$user;
 ?>
 
     <?php

@@ -23,7 +23,7 @@ $_SESSION["success_messages"] = '';
     */
 if(isset($_POST["btn_update_request"]) && !empty($_POST["btn_update_request"])){
 
-        /* Проверяем если в глобальном массиве $_POST существуют данные отправленные из формы и заключаем переданные данные в обычные переменные.*/
+    /* Проверяем если в глобальном массиве $_POST существуют данные отправленные из формы и заключаем переданные данные в обычные переменные.*/
 
 //Проверяем заголовок
     if(isset($_POST["caption"]) && strlen($_POST["caption"])>= 3 ){
@@ -436,20 +436,20 @@ if(isset($_POST["btn_update_request"]) && !empty($_POST["btn_update_request"])){
         //Останавливаем  скрипт
         exit();
     }
-        //if ($mysqli->connect_errno) { die('Ошибка соединения: ' . $mysqli->connect_error); }else{echo 'Connect true';}
+    //if ($mysqli->connect_errno) { die('Ошибка соединения: ' . $mysqli->connect_error); }else{echo 'Connect true';}
 
 
-        $rolename = trim($_POST["option1"]);
-        $rolename = htmlspecialchars($rolename, ENT_QUOTES);
-        $result_query_Role_id = $mysqli->query("select Role_id from Roles where Role_name='".$rolename."'");
-        $roleid = mysqli_fetch_assoc($result_query_Role_id);
-        $resultroleid = $roleid['Role_id'];
+    $rolename = trim($_POST["option1"]);
+    $rolename = htmlspecialchars($rolename, ENT_QUOTES);
+    $result_query_Role_id = $mysqli->query("select Role_id from Roles where Role_name='".$rolename."'");
+    $roleid = mysqli_fetch_assoc($result_query_Role_id);
+    $resultroleid = $roleid['Role_id'];
 
-        $organisation_name = trim($_POST["option2"]);
-        $organisation_name = htmlspecialchars($organisation_name, ENT_QUOTES);
-        $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='".$organisation_name."'");
-        $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
-        $resultidorganisationid = $idorganisation['id_organisation'];
+    $organisation_name = trim($_POST["option2"]);
+    $organisation_name = htmlspecialchars($organisation_name, ENT_QUOTES);
+    $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='".$organisation_name."'");
+    $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
+    $resultidorganisationid = $idorganisation['id_organisation'];
 
 
     //формирование данных для записи в бд
@@ -502,36 +502,36 @@ and fk_role_id =2 and email='".$userRespons."'");
     $resultServiceID = $serviceid['service_id'];
 
 //Запрос на изменение обращения в БД
-        $result_query_insert = $mysqli->query("update requests set caption='".$caption."', short_description='".$short_description."', description='".$description."', fk_responsible_user_id='".$resultUserResponsID."', fk_status_id='" .$resultStatusID."', fk_priority_id='".$resultPriorityID."', fk_service_id='".$resultServiceID."'  where request_id='".$_POST["request_id"]."'");
+    $result_query_insert = $mysqli->query("update requests set caption='".$caption."', short_description='".$short_description."', description='".$description."', fk_responsible_user_id='".$resultUserResponsID."', fk_status_id='" .$resultStatusID."', fk_priority_id='".$resultPriorityID."', fk_service_id='".$resultServiceID."'  where request_id='".$_POST["request_id"]."'");
 
-        if(!$result_query_insert){
-            // Сохраняем в сессию сообщение об ошибке.
-            $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на изменение пользователя в БД</p>";
+    if(!$result_query_insert){
+        // Сохраняем в сессию сообщение об ошибке.
+        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на изменение пользователя в БД</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
+        //Возвращаем пользователя на страницу регистрации
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: ".$address_site."/form_register.php");
 
-            //Останавливаем  скрипт
-            exit();
-        }else{
+        //Останавливаем  скрипт
+        exit();
+    }else{
 
-            $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br /><br />Обращение изменено</p>";
+        $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br />Пользователь зарегистрирован</p>";
 
-            /*//Отправляем пользователя на страницу авторизации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_auth.php");*/
+        /*//Отправляем пользователя на страницу авторизации
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: ".$address_site."/form_auth.php");*/
 
-            //Отправляем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_request.php");
-        }
+        //Отправляем пользователя на страницу регистрации
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: ".$address_site."/form_register.php");
+    }
 
-        /* Завершение запроса */
-        $result_query_insert->close();
+    /* Завершение запроса */
+    $result_query_insert->close();
 
 //Закрываем подключение к БД
-        $mysqli->close();
+    $mysqli->close();
 
 
 

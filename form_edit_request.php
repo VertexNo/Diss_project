@@ -88,23 +88,48 @@ where request_id > 0 and request_id ='".$request_id."'");
     ?>
     <!-- Сделать проверку. Если в статусе закрыто - то сделать поля неактивными -->
     <br><h1> Авторизованы</h1>
-    <form id="form_request" method="post">
+    <form action="update_request.php" id="form_request" method="post">
         <div class="input">
         Редактирование обращения
         <div class="pole">
+                <label>Номер:</label>
+                <div class="input"><input readonly type="text" id="request_id" required="required" name="request_id" value="<?php echo $request_id ?>"/></div>
+
+        </div>
+        <div class="pole">
             <label>Заголовок:</label>
-            <div class="input"><input type="text" id="caption" required="required" name="caption" value="<?php echo $row_request['caption'] ?>"/></div>
+            <div class="input"><input type="text" id="caption" required="required" name="caption" value="<?php echo $row_request['caption']?>"
+                <?php
+                if($row_request['status_id']==5)
+                {
+                    echo ' readonly';
+                }
+                ?>/></div>
             <span id="valid_caption_message" class="mesage_error"></span>
         </div>
 
         <div class="pole">
             <label>Краткое описание:</label>
-            <div class="input"><input type="text"  id="short_description" required="required" name="short_description" value="<?php echo $row_request['short_description'] ?>"/></div>
+            <div class="input"><input type="text"  id="short_description" required="required" name="short_description" value="<?php echo $row_request['short_description'] ?>"
+                    <?php
+                    if($row_request['status_id']==5)
+                    {
+                        echo ' readonly';
+                    }
+                    ?>
+                /></div>
             <span id="valid_short_description_message" class="mesage_error"></span>
         </div>
         <div class="pole">
             <label>Полное описание проблемы:</label>
-            <div class="input"><textarea id="description" required="required" name="description"> <?php echo $row_request['description'] ?> </textarea></div>
+            <div class="input"><textarea id="description" required="required" name="description"
+                    <?php
+                    if($row_request['status_id']==5)
+                    {
+                        echo ' readonly';
+                    }
+                    ?>
+                > <?php echo $row_request['description'] ?> </textarea></div>
             <span id="valid_description_message" class="mesage_error"></span>
         </div>
         <div class="pole">
@@ -112,7 +137,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <select name="option3" class="cellbut">
                 <?php //Option для выбора пользователя
 
-                $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name) as userRespons from users where user_id >0 and fk_role_id =2");
+                $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userRespons from users where user_id >0 and fk_role_id =2");
                 $result_query_num_users = mysqli_num_rows($result_query_users);
                 for ($i=0; $i <$result_query_num_users; $i++)
                 { /*Сделать проверку на текущий статус в заявке и выводимыми статусами*/
@@ -158,7 +183,7 @@ where request_id > 0 and request_id ='".$request_id."'");
         <div class="pole">
             <label>Приоритет:</label>
             <select name="option2" class="cellbut">
-                <?php //Option для выбора пользователя
+                <?php //Option для выбора приоритета
 
                 $result_query_priority = $mysqli->query("select priority_id,priority_name from priority where priority_id >0");
                 $result_query_num_priority = mysqli_num_rows($result_query_priority);
@@ -223,8 +248,10 @@ where request_id > 0 and request_id ='".$request_id."'");
         </div>
 
         <div class="sub">
-            <button type="submit" name="btn_update_request" class="buttonUpd">Сохранить</button>
-            <button type="submit" name="btn_cancel_edit_request">Отмена</button>
+            <input type="submit" name="btn_update_request" value="Сохранить">
+            <input type="submit" name="cancel_request" value="Отмена">
+            <input type="reset" name="reset_request" value="Сброс">
+
 
         </div>
     </form>
