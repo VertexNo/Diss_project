@@ -44,6 +44,9 @@ $user = $matches[0][0];
 $user=preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i",$user, $matches2);
 $user=$matches2[0][0];
 echo 'USEREMAIL2='.$user;
+//ini_set('date.timezone', 'Europe/Moscow');
+$date_start_work = date("Y-m-d H:i:s");
+echo 'DATESTARTWORK='.$date_start_work;
 ?>
 
     <?php

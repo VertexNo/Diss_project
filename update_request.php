@@ -537,8 +537,34 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $serviceid = mysqli_fetch_assoc($result_query_Service_id);
         $resultServiceID = $serviceid['service_id'];
 
+
+        /*Здесь нужно еще прописать установку дат при выборе статуса "в работе" (id = 2) и "решена" (id = 4)*/
+        $date_start_work = $_POST["date_start_work"];
+        $date_resolve = $_POST["date_resolve"];
+
+        /*проверка, если они пустые, то просто null обратно проставляем*/
+        if($date_start_work =='Не взята на исполнение' || $date_start_work == '0000-00-00 00:00:00')
+        {
+            $date_start_work = 'null';
+        }
+        if($date_resolve == 'Не решена' || $date_resolve == '0000-00-00 00:00:00')
+        {
+            $date_resolve = 'null';
+        }
+
+        /*проверка статусов. Если выбран соотв статус - ставим дату*/
+        if($resultStatusID == 2)
+        {
+            $date_start_work = date("Y-m-d H:i:s");
+            $date_resolve = 'null';
+        }
+        if($resultStatusID == 4)
+        {
+            $date_resolve = date("Y-m-d H:i:s");
+        }
+
 //Запрос на изменение обращения в БД
-        $result_query_insert = $mysqli->query("update requests set caption='" . $caption . "', short_description='" . $short_description . "', description='" . $description . "', fk_responsible_user_id='" . $resultUserResponsID . "', fk_status_id='" . $resultStatusID . "', fk_priority_id='" . $resultPriorityID . "', fk_service_id='" . $resultServiceID . "'  where request_id='" . $_POST["request_id"] . "'");
+        $result_query_insert = $mysqli->query("update requests set caption='" . $caption . "', short_description='" . $short_description . "', description='" . $description . "', fk_responsible_user_id='" . $resultUserResponsID ."' , date_start_work='".$date_start_work."', date_resolve='".$date_resolve. "', fk_status_id='" . $resultStatusID . "', fk_priority_id='" . $resultPriorityID . "', fk_service_id='" . $resultServiceID . "'  where request_id='" . $_POST["request_id"] . "'");
 
         if (!$result_query_insert) {
             // Сохраняем в сессию сообщение об ошибке.

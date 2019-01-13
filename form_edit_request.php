@@ -43,6 +43,7 @@ req.caption as caption,
 req.short_description as short_description,
 req.description as description,
 req.date_create as date_create,
+IFNULL(req.date_start_work, 'Не взята на исполнение') as date_start_work, 
 IFNULL(req.date_resolve, 'Не решена') as date_resolve, 
 concat(userCreate.last_name,\" \",userCreate.first_name) as userCreate, 
 userCreate.user_id as userCreateID, 
@@ -98,7 +99,10 @@ where request_id > 0 and request_id ='".$request_id."'");
 чтобы редактировать обращение, переоткройте его соответсвутющей кнопкой';
             }
             ?>
-        <div class="pole">
+            <div class="input"><input type="text" hidden id="date_start_work" name="date_start_work" value="<?php echo $row_request['date_start_work'] ?>"/></div>
+            <div class="input"><input type="text" hidden id="date_resolve" name="date_resolve" value="<?php echo $row_request['date_resolve'] ?>"/></div>
+
+            <div class="pole">
                 <label>Номер:</label>
                 <div class="input"><input readonly type="text" id="request_id" required="required" name="request_id" value="<?php echo $request_id ?>"/></div>
 
