@@ -35,6 +35,7 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
     ?>
 
     <br><h1>Авторизованы</h1>
+    <button onclick="location.href='./form_create_request.php'">Создать обращение</button>
 
 
     <!--/*Старт формы обращений*/-->

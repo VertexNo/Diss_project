@@ -26,38 +26,8 @@ if(isset($_POST["cancel_request"]) && !empty($_POST["cancel_request"])){
     header("HTTP/1.1 301 Moved Permanently");
     header("Location: " . $address_site . "/form_request.php");
 }
-if(isset($_POST["reopen_request"]) && !empty($_POST["reopen_request"])){
-    $result_query = $mysqli->query("update requests set fk_status_id = 1  where request_id='".$_POST["request_id"]."'");
-    if (!$result_query) {
-        // Сохраняем в сессию сообщение об ошибке.
-        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на изменение пользователя в БД</p>";
-
-        //Возвращаем пользователя на страницу регистрации
-        header("HTTP/1.1 301 Moved Permanently");
-        header("Location: " . $address_site . "/form_register.php");
-
-        //Останавливаем  скрипт
-        exit();
-    } else {
-
-        $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br /><br />Обращение переоткрыто</p>";
-
-        /*//Отправляем пользователя на страницу авторизации
-        header("HTTP/1.1 301 Moved Permanently");
-        header("Location: ".$address_site."/form_auth.php");*/
-
-        //Отправляем пользователя на страницу регистрации
-        header("HTTP/1.1 301 Moved Permanently");
-        header("Location: " . $address_site . "/form_request.php");
-    }
-
-    /* Завершение запроса */
-    $result_query->close();
-
-
-}
 else {
-    if (isset($_POST["btn_update_request"]) && !empty($_POST["btn_update_request"])) {
+    if (isset($_POST["btn_create_request"]) && !empty($_POST["btn_create_request"])) {
 
         /* Проверяем если в глобальном массиве $_POST существуют данные отправленные из формы и заключаем переданные данные в обычные переменные.*/
 
@@ -191,17 +161,17 @@ else {
         }
 
         //Проверка на существование статуса
-        if (isset($_POST["option1"])) {
+        if (isset($_POST["fk_status_id"])) {
 
             //Обрезаем пробелы с начала и с конца строки
-            $status = trim($_POST["option1"]);
+            $status = trim($_POST["fk_status_id"]);
 
             if (!empty($status)) {
 
                 $status = htmlspecialchars($status, ENT_QUOTES);
 
 //Проверяем нет ли уже такого адреса в БД.
-                $result_query = $mysqli->query("select status_id,status_name from status where status_name='" . $status . "'");
+                $result_query = $mysqli->query("select status_id,status_name from status where status_id='" . $status . "'");
 
 //Если кол-во полученных строк меньше единицы, значит такого статуса нет
                 if ($result_query->num_rows < 1) {
@@ -328,7 +298,81 @@ else {
             exit();
         }
 
-        //Проверка на существование пользователя
+        /*111*/
+        //Проверка на существование создателя - пользователя
+        if (isset($_POST["fk_create_user_id"])) {
+
+            //Обрезаем пробелы с начала и с конца строки
+            $user = trim($_POST["fk_create_user_id"]);
+
+            if (!empty($user)) {
+
+                $user = htmlspecialchars($user, ENT_QUOTES);
+
+//Проверяем нет ли уже такого адреса в БД.//
+
+
+                $result_query = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userRespons from users where user_id >0 and user_id ='" . $user . "'");
+
+//Если кол-во полученных строк меньше единицы, значит такого email нет
+                if ($result_query->num_rows < 1) {
+
+                    //Если полученный результат не равен false
+                    if (($row = $result_query->fetch_assoc()) != false) {
+
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Такого пользователя, под которым создается обращение не существует!</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+
+                    } else {
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+                    }
+
+                    /* закрытие выборки */
+                    $result_query->close();
+
+                    //Останавливаем  скрипт
+                    exit();
+                }
+
+                /* закрытие выборки */
+                $result_query->close();
+
+            } else {
+                // Сохраняем в сессию сообщение об ошибке.
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите создателя обращения</p>";
+
+                //Возвращаем пользователя на страницу регистрации
+                header("HTTP/1.1 301 Moved Permanently");
+                header("Location: " . $address_site . "/form_request.php");
+
+                //Останавливаем  скрипт
+                exit();
+            }
+
+        } else {
+            // Сохраняем в сессию сообщение об ошибке.
+            $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует создатель / пользователь</p>";
+
+            //Возвращаем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: " . $address_site . "/form_request.php");
+
+            //Останавливаем  скрипт
+            exit();
+        }
+
+        /*111*/
+
+        //Проверка на существование ИСПОЛНИТЕЛЯ - пользователя
         if (isset($_POST["option3"])) {
 
             //Обрезаем пробелы с начала и с конца строки
@@ -472,23 +516,81 @@ else {
             //Останавливаем  скрипт
             exit();
         }
+
+
+        //Проверка на существование статуса
+        if (isset($_POST["fk_status_id"])) {
+
+            //Обрезаем пробелы с начала и с конца строки
+            $status = trim($_POST["fk_status_id"]);
+
+            if (!empty($status)) {
+
+                $status = htmlspecialchars($status, ENT_QUOTES);
+
+//Проверяем нет ли уже такого адреса в БД.
+                $result_query = $mysqli->query("select status_id,status_name from status where status_id='" . $status . "'");
+
+//Если кол-во полученных строк меньше единицы, значит такого статуса нет
+                if ($result_query->num_rows < 1) {
+
+                    //Если полученный результат не равен false
+                    if (($row = $result_query->fetch_assoc()) != false) {
+
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Такого статуса не существует!</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+
+                    } else {
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+                    }
+
+                    /* закрытие выборки */
+                    $result_query->close();
+
+                    //Останавливаем  скрипт
+                    exit();
+                }
+
+                /* закрытие выборки */
+                $result_query->close();
+
+            } else {
+                // Сохраняем в сессию сообщение об ошибке.
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите статус обращения</p>";
+
+                //Возвращаем пользователя на страницу регистрации
+                header("HTTP/1.1 301 Moved Permanently");
+                header("Location: " . $address_site . "/form_request.php");
+
+                //Останавливаем  скрипт
+                exit();
+            }
+
+        } else {
+            // Сохраняем в сессию сообщение об ошибке.
+            $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует выбранный статус для установки в обращение</p>";
+
+            //Возвращаем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: " . $address_site . "/form_request.php");
+
+            //Останавливаем  скрипт
+            exit();
+        }
         //if ($mysqli->connect_errno) { die('Ошибка соединения: ' . $mysqli->connect_error); }else{echo 'Connect true';}
 
 
-        $rolename = trim($_POST["option1"]);
-        $rolename = htmlspecialchars($rolename, ENT_QUOTES);
-        $result_query_Role_id = $mysqli->query("select Role_id from Roles where Role_name='" . $rolename . "'");
-        $roleid = mysqli_fetch_assoc($result_query_Role_id);
-        $resultroleid = $roleid['Role_id'];
 
-        $organisation_name = trim($_POST["option2"]);
-        $organisation_name = htmlspecialchars($organisation_name, ENT_QUOTES);
-        $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='" . $organisation_name . "'");
-        $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
-        $resultidorganisationid = $idorganisation['id_organisation'];
-
-
-        //формирование данных для записи в бд
+//формирование данных для записи в бд
         //заголовок
         $caption = trim($_POST["caption"]);
         $caption = htmlspecialchars($caption, ENT_QUOTES);
@@ -500,6 +602,10 @@ else {
         //описание
         $description = trim($_POST["description"]);
         $description = htmlspecialchars($description, ENT_QUOTES);
+
+        //создатель (поиск EMAIL такое же добавить)
+        $userCreate = trim($_POST["fk_create_user_id"]);
+        $userCreate = htmlspecialchars($userCreate, ENT_QUOTES);
 
         //исполнитель (поиск EMAIL такое же добавить)
         $userRespons = trim($_POST["option3"]);
@@ -516,12 +622,11 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $userResponsID = mysqli_fetch_assoc($result_query_userRespons);
         $resultUserResponsID = $userResponsID['user_id'];
 
+        //дата создания
+        $dateCreate = trim($_POST["date_create"]);
+
         //статус
-        $statusname = trim($_POST["option1"]);
-        $statusname = htmlspecialchars($statusname, ENT_QUOTES);
-        $result_query_Status_id = $mysqli->query("select status_id,status_name from status where status_iD >0 and status_name='" . $statusname . "'");
-        $statusid = mysqli_fetch_assoc($result_query_Status_id);
-        $resultStatusID = $statusid['status_id'];
+        $statusid = trim($_POST["fk_status_id"]);
 
         //приоритет
         $priorityname = trim($_POST["option2"]);
@@ -537,28 +642,29 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $serviceid = mysqli_fetch_assoc($result_query_Service_id);
         $resultServiceID = $serviceid['service_id'];
 
-//Запрос на изменение обращения в БД
-        $result_query_insert = $mysqli->query("update requests set caption='" . $caption . "', short_description='" . $short_description . "', description='" . $description . "', fk_responsible_user_id='" . $resultUserResponsID . "', fk_status_id='" . $resultStatusID . "', fk_priority_id='" . $resultPriorityID . "', fk_service_id='" . $resultServiceID . "'  where request_id='" . $_POST["request_id"] . "'");
+//Запрос на создание обращения в БД
+        $result_query_insert = $mysqli->query("insert into requests (request_id,caption,short_description, description,
+fk_create_user_id, fk_responsible_user_id, date_create, fk_status_id, fk_priority_id, fk_service_id) values(null,'" . $caption . "', '" . $short_description . "', '" . $description ."' , '".$userCreate . "', '" . $resultUserResponsID ."','".$dateCreate. "', '" . $statusid . "', '" . $resultPriorityID . "', '" . $resultServiceID . "' )");
 
         if (!$result_query_insert) {
             // Сохраняем в сессию сообщение об ошибке.
-            $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на изменение обращения в БД</p>";
+            $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на создание обращения в БД</p>";
 
-            //Возвращаем пользователя на страницу обращений
+            //Возвращаем пользователя на страницу регистрации
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: " . $address_site . "/form_request.php");
+            header("Location: " . $address_site . "/form_register.php");
 
             //Останавливаем  скрипт
             exit();
         } else {
 
-            $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br /><br />Обращение изменено</p>";
+            $_SESSION["success_messages"] = "<p class='success_message'>Обращение создано успешно <br /><br />Обращение создано</p>";
 
             /*//Отправляем пользователя на страницу авторизации
             header("HTTP/1.1 301 Moved Permanently");
             header("Location: ".$address_site."/form_auth.php");*/
 
-            //Отправляем пользователя на страницу регистрации
+            //Отправляем пользователя на страницу обращений
             header("HTTP/1.1 301 Moved Permanently");
             header("Location: " . $address_site . "/form_request.php");
         }
