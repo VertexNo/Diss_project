@@ -72,6 +72,7 @@ body
 }
 
 
+
 #authorized h2{
     text-align: center;
 }
@@ -92,3 +93,9 @@ table th{
 
 /*Курсор делает вместо строкового редактирования - руку*/
 tr {cursor:pointer}
+
+.spoiler_body {display:none;}
+.spoiler_links {cursor:pointer;}
+
+
+
