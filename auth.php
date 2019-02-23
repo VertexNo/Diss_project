@@ -143,7 +143,7 @@ if(isset($_POST["btn_submit_auth"]) && !empty($_POST["btn_submit_auth"])){
             exit();
         }
         //Запрос в БД на выборке пользователя.
-        $result_query_select = $mysqli->query("SELECT * FROM `users` WHERE email = '".$email."' AND password = '".$password."'");
+        $result_query_select = $mysqli->query("SELECT * FROM `users` WHERE email_status =1 AND email = '".$email."' AND password = '".$password."'");
 
         if(!$result_query_select){
             // Сохраняем в сессию сообщение об ошибке.
@@ -173,6 +173,10 @@ if(isset($_POST["btn_submit_auth"]) && !empty($_POST["btn_submit_auth"])){
                 $_SESSION['password'] = $password;
                 $_SESSION['fk_Role_id'] = $row_user['fk_Role_id'];
                 $_SESSION['user_id'] = $row_user['user_id'];
+
+                $_SESSION['filter_requests'] = '';
+                $_SESSION['order_requests'] = '';
+
                 //Возвращаем пользователя на главную страницу
                 header("HTTP/1.1 301 Moved Permanently");
                 header("Location: ".$address_site."/index.php");

@@ -3,7 +3,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: #4CAF50;
 
 /*Зафиксировать панель при прокрутке*/
     position: fixed;
@@ -25,10 +25,13 @@ a.styletest{
     float: left;
 }
 .active {
-    background-color: #4CAF50;
+    background-color: #feffff;
+    color: black;
 }
 
 /* Измените цвет ссылки на #111 (черный) при наведении */
 li a:hover {
-    background-color: #4CAF50;
+    background-color: #feffff;
+    color: black;
 }
+

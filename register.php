@@ -134,7 +134,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 //Если формат полученного почтового адреса не соответствует регулярному выражению
                 if( !preg_match($reg_email, $email)){
                     // Сохраняем в сессию сообщение об ошибке.
-                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Вы ввели неправельный email</p>";
+                    $_SESSION["error_messages"] .= "<p class='mesage_error' >Вы ввели неправильный email</p>";
 
                     //Возвращаем пользователя на страницу регистрации
                     header("HTTP/1.1 301 Moved Permanently");

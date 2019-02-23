@@ -144,7 +144,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <span id="valid_description_message" class="mesage_error"></span>
         </div>
         <div class="pole">
-            <label>Исполнитель:</label>
+            <label>Желаемый исполнитель:</label>
             <?php
             if($row_request['status_id']==5)
             {
@@ -182,11 +182,11 @@ where request_id > 0 and request_id ='".$request_id."'");
             <?php
             if($row_request['status_id']==5)
             {
-                echo '<select name="option1" class="cellbut" disabled>';
+                echo '<select name="option1" id="option1" class="cellbut" disabled>';
             }
             else
             {
-                echo '<select name="option1" class="cellbut">';
+                echo '<select name="option1" id="option1" class="cellbut">';
             }
             ?>
             <!--<select name="option1" class="cellbut">-->
@@ -200,10 +200,10 @@ where request_id > 0 and request_id ='".$request_id."'");
 
                     if($row_request['status_id'] == $result['status_id'])
                     {
-                        echo '<option required="required" selected> '.$result['status_name'].'</option>';
+                        echo '<option value="'.$result['status_name'].'" required="required" selected> '.$result['status_name'].'</option>';
                     }
                     else {
-                        echo '<option required="required"> '.$result['status_name'].'</option>';
+                        echo '<option value="'.$result['status_name'].'" required="required"> '.$result['status_name'].'</option>';
                     }
 
 
@@ -211,6 +211,26 @@ where request_id > 0 and request_id ='".$request_id."'");
                 ?>
             </select>
         </div>
+
+            <script>
+                $(document).ready(function(){
+                    $("#option1").click(function(){
+                        var a = $("#option1").val();
+                        var b = $("#request_id").val();
+                        $.post('check_status.php', {id:a, reqid:b}, function(data){
+                            $("#block").html(data);
+                        });
+                    });
+                });
+            </script>
+
+            <div class="pole">
+                <div id="block"></div>
+
+            </div>
+
+
+
         <div class="pole">
             <label>Приоритет:</label>
             <?php

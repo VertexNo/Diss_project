@@ -1,7 +1,7 @@
 body
 {
 
-    background:url(../background/grey-tissue.jpg) repeat;
+    background:url(../background/main_background.png) repeat;
 
 }
 
@@ -34,6 +34,7 @@ body
 
 #auth_block{
     float: right;
+
 }
 
 #auth_block a{
@@ -42,6 +43,10 @@ body
     color: #fff;
 
     text-decoration: none;
+}
+#auth_block a:hover{
+    color: black;
+
 }
 /*
 #auth_block a:hover{
@@ -85,7 +90,7 @@ table tbody tr:nth-child(1n) {background: #e0e4e0;}
 table tbody tr:nth-child(2n) {background: #f4f4f4;}
 table tbody tr:hover {background: #ebffe8;}
 table th{
-    color: #ffffff; font-weight: bold; background: #3f4741;
+    color: black; font-weight: bold; background: #59cf5c;
     position: -webkit-sticky;
     position: sticky;
     top: 45px;

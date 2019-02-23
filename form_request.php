@@ -74,7 +74,18 @@ where request_id > 0";
         case 3: $prefilter = ' and userCreate.user_id = '.$_SESSION['user_id']; break;
         default: $prefilter = ' '; break;
     }
+    $prefilter_organisation = '';
 
+    if($_SESSION['fk_Role_id'] != 1)
+    {
+        $query_org_curr_user = $mysqli->query("SELECT fk_organisation_id FROM `users` WHERE user_id = '" . $_SESSION['user_id'] . "'");
+        $row_org_curr_user = mysqli_fetch_assoc($query_org_curr_user);
+
+        $prefilter_organisation .= ' and ' . $row_org_curr_user['fk_organisation_id'] . ' in (userCreate.fk_organisation_id,userRespons.fk_organisation_id) ';
+    }
+
+//Сдлал префильтр ПО ОРГАНИЗАЦИИ!!!!!!!!!!
+    $prefilter.=$prefilter_organisation;
 
     //Фильтр для выбранных значений
 
@@ -283,9 +294,14 @@ and fk_role_id =2 and email='" . $userRespons . "'");
     $query.=$prefilter;
 
 
+    if (isset($_POST["filter_reset"]) && !empty($_POST["filter_reset"]))
+    {
+        $_SESSION['filter_requests'] = '';
+    }
 
     //Проверяем были ли нажаты кнопки фильтрации или сброса фильтра
      if (isset($_POST["filter_submit"]) && !empty($_POST["filter_submit"])) {
+         $_SESSION['filter_requests'] = '';
          //Проставляем условия выбранных фильтров и очищаем
          $filtr .= $filter_request_id; $filter_request_id= '';
          $filtr .= $filter_caption; $filter_caption= '';
@@ -299,17 +315,22 @@ and fk_role_id =2 and email='" . $userRespons . "'");
          $filtr .= $filter_status_id; $filter_status_id= '';
          $filtr .= $filter_priority_id; $filter_priority_id= '';
          $filtr .= $filter_service_id; $filter_service_id= '';
-         $query.= $filtr;
+         $_SESSION['filter_requests'].= $filtr;
      }
      //можно если что еще ELSE запилить если надо будет
 
-
-
-
-
-
     //в конце сортировка для префильтра / фильтра
-    $query.=$orderBy;
+    $_SESSION['order_requests']='';
+    $_SESSION['order_requests'].=$orderBy;
+    $query.=$_SESSION['filter_requests'];
+
+
+    echo 'FILTER=';
+    echo $_SESSION['filter_requests'];
+
+    echo 'ORDER=';
+    echo $_SESSION['order_requests'];
+
     echo $filter_request_id;
     echo $query;
 
@@ -507,8 +528,74 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         <tbody><!--необязательный тег-->
     <?php //Option для выбора организации
 
-    //выполняем запрос
+   //ПЕРЕДЕЛАл ПОД СЕССИЮ!!!! query = session value //выполняем запрос //
     //echo $query;
+    // Устанавливаем количество записей, которые будут выводиться на одной странице
+    // Поставьте нужное вам число. Для примера я указал одну запись на страницу
+    $quantity=30;
+
+    // Ограничиваем количество ссылок, которые будут выводиться перед и
+    // после текущей страницы
+    $limit=3;
+
+    // Если значение page= не является числом, то показываем
+    // пользователю первую страницу
+    if(!is_numeric($page)) $page=1;
+
+    // Если пользователь вручную поменяет в адресной строке значение page= на нуль,
+    // то мы определим это и поменяем на единицу, то-есть отправим на первую
+    // страницу, чтобы избежать ошибки
+    if ($page<1) $page=1;
+
+    // Узнаем количество всех доступных записей
+    $q="select count(*)
+from requests req
+inner join users userCreate on req.fk_create_user_id = userCreate.user_id
+inner join users userRespons on req.fk_responsible_user_id = userRespons.user_id
+inner join organisations org on org.id_organisation = userCreate.fk_organisation_id
+inner join status status on req.fk_status_id = status.status_id
+inner join priority priority on priority.priority_id = req.fk_priority_id
+inner join service service on req.fk_service_id = service.service_id
+where request_id > 0";
+    $q.=$_SESSION['filter_requests'];
+    $q.=$_SESSION['order_requests'];
+
+
+    // получаем номер страницы
+    if (isset($_GET['page'])) $page=($_GET['page']-1); else $page=0;
+    // вычисляем первый оператор для LIMIT
+
+    $result2=$mysqli->query($q);
+    $num_r = mysqli_fetch_row($result2);
+    $num = $num_r[0];
+    // Вычисляем количество страниц, чтобы знать сколько ссылок выводить
+    $pages = $num/$quantity;
+
+    // Округляем полученное число страниц в большую сторону
+    $pages = ceil($pages);
+
+    // Здесь мы увеличиваем число страниц на единицу чтобы начальное значение было
+    // равно единице, а не нулю. Значение page= будет
+    // совпадать с цифрой в ссылке, которую будут видеть посетители
+    $pages++;
+
+    // Если значение page= больше числа страниц, то выводим первую страницу
+    if ($page>$pages) $page = 1;
+    // Переменная $list указывает с какой записи начинать выводить данные.
+    // Если это число не определено, то будем выводить
+    // с самого начала, то-есть с нулевой записи
+    if (!isset($list)) $list=0;
+
+    // Чтобы у нас значение page= в адресе ссылки совпадало с номером
+    // страницы мы будем его увеличивать на единицу при выводе ссылок, а
+    // здесь наоборот уменьшаем чтобы ничего не нарушить.
+    $list=$page*$quantity;
+
+    $orderby_pagination = $_SESSION['order_requests'].' LIMIT '.$quantity.' OFFSET '. $list;
+
+    $query .= $orderby_pagination;
+
+
     $result_query_requests = $mysqli->query($query);
 
 
@@ -597,8 +684,84 @@ and fk_role_id =2 and email='" . $userRespons . "'");
 
 
     <?php
-    echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
-    echo 'user_id'.$_SESSION['user_id'];
+    // дальше выводим ссылки на страницы:
+    echo 'Страницы: ';
+
+// _________________ начало блока 1 _________________
+
+// Выводим ссылки "назад" и "на первую страницу"
+    if ($page>=1) {
+
+        // Значение page= для первой страницы всегда равно единице,
+        // поэтому так и пишем
+        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=1"><<</a> &nbsp; ';
+
+        // Так как мы количество страниц до этого уменьшили на единицу,
+        // то для того, чтобы попасть на предыдущую страницу,
+        // нам не нужно ничего вычислять
+        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=' . $page .
+            '">< </a> &nbsp; ';
+    }
+
+// __________________ конец блока 1 __________________
+
+// На данном этапе номер текущей страницы = $page+1
+    if (isset($_GET['page'])) $_this=($_GET['page']+1); else $_this=0;
+
+// Узнаем с какой ссылки начинать вывод
+    $start = $_this-$limit;
+
+// Узнаем номер последней ссылки для вывода
+    $end = $_this+$limit;
+
+// Выводим ссылки на все страницы
+// Начальное число $j в нашем случае должно равнятся единице, а не нулю
+    for ($j = 1; $j<$pages; $j++) {
+
+        // Выводим ссылки только в том случае, если их номер больше или равен
+        // начальному значению, и меньше или равен конечному значению
+        if ($j>=$start && $j<=$end) {
+
+            // Ссылка на текущую страницу выделяется жирным
+            if ($j==($page+1)) echo '<a href="' . $_SERVER['SCRIPT_NAME'] .
+                '?page=' . $j . '"><strong style="color: #df0000">' . $j .
+                '</strong></a> &nbsp; ';
+
+            // Ссылки на остальные страницы
+            else echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=' .
+                $j . '">' . $j . '</a> &nbsp; ';
+        }
+    }
+
+// _________________ начало блока 2 _________________
+
+// Выводим ссылки "вперед" и "на последнюю страницу"
+    if ($j>$page && ($page+2)<$j) {
+
+        // Чтобы попасть на следующую страницу нужно увеличить $pages на 2
+        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=' . ($page+2) .
+            '"> ></a> &nbsp; ';
+
+        // Так как у нас $j = количество страниц + 1, то теперь
+        // уменьшаем его на единицу и получаем ссылку на последнюю страницу
+        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=' . ($j-1) .
+            '">>></a> &nbsp; ';
+    }
+
+// __________________ конец блока 2 __________________
+
+
+echo '<br>'.$query;
+    echo '<br>$num'. $num;
+    echo '<br>$quantity'. $quantity;
+        echo '<br>$list'.$list;
+    echo '<br>$pages='.$pages;
+
+    echo '<br>$pagesФЫВФВ='.$num/$quantity;
+
+
+    echo '<br>fk_Role_id'.$_SESSION['fk_Role_id'];
+    echo '<br>user_id'.$_SESSION['user_id'];
 
     $mysqli->close();
     ?>

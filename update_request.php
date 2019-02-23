@@ -523,6 +523,13 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $statusid = mysqli_fetch_assoc($result_query_Status_id);
         $resultStatusID = $statusid['status_id'];
 
+        //оценка
+        $evaluationname = trim($_POST["option5"]);
+        $evaluationname = htmlspecialchars($evaluationname, ENT_QUOTES);
+        $result_query_Evaluation_id = $mysqli->query("select evaluation_id,evaluation_name from request_performance_evaluation where evaluation_name='" .$evaluationname. "'");
+        $evaluationid = mysqli_fetch_assoc($result_query_Evaluation_id);
+        $resultEvaluationID = $evaluationid['evaluation_id'];
+
         //приоритет
         $priorityname = trim($_POST["option2"]);
         $priorityname = htmlspecialchars($priorityname, ENT_QUOTES);
@@ -564,7 +571,7 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         }
 
 //Запрос на изменение обращения в БД
-        $result_query_insert = $mysqli->query("update requests set caption='" . $caption . "', short_description='" . $short_description . "', description='" . $description . "', fk_responsible_user_id='" . $resultUserResponsID ."' , date_start_work='".$date_start_work."', date_resolve='".$date_resolve. "', fk_status_id='" . $resultStatusID . "', fk_priority_id='" . $resultPriorityID . "', fk_service_id='" . $resultServiceID . "'  where request_id='" . $_POST["request_id"] . "'");
+        $result_query_insert = $mysqli->query("update requests set caption='" . $caption . "', short_description='" . $short_description . "', description='" . $description . "', fk_responsible_user_id='" . $resultUserResponsID ."' , date_start_work='".$date_start_work."', date_resolve='".$date_resolve. "', fk_status_id='" . $resultStatusID . "', fk_priority_id='" . $resultPriorityID . "', fk_service_id='" . $resultServiceID . "', evaluation_id='" .$resultEvaluationID. "'  where request_id='" . $_POST["request_id"] . "'");
 
         if (!$result_query_insert) {
             // Сохраняем в сессию сообщение об ошибке.
