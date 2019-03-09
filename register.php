@@ -392,7 +392,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
         $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
         $resultidorganisationid = $idorganisation['id_organisation'];
 //Запрос на добавления пользователя в БД
-         $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password, fk_Role_id,fk_organisation_id) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."'," .$resultroleid.",".$resultidorganisationid.")");
+         $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password, fk_Role_id,fk_organisation_id, k3_new_employee, email_status) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."'," .$resultroleid.",".$resultidorganisationid.", 1, 1)");
 
         if(!$result_query_insert){
             // Сохраняем в сессию сообщение об ошибке.

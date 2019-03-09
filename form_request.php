@@ -93,18 +93,33 @@ where request_id > 0";
     $filter_request_id= '';
     if(isset($_POST['filter_request_id']) and $_POST['filter_request_id']!='') {
         $filter_request_id =' And req.request_id='.$_POST['filter_request_id'];
+        $_SESSION['filter_request_id'] = $_POST['filter_request_id'];
+    }
+    else if ($_POST['filter_request_id']=='')
+    {
+        $_SESSION['filter_request_id'] = null;
     }
 
     //Заголовок обращения
     $filter_caption= '';
     if(isset($_POST['filter_caption']) and $_POST['filter_caption']!='') {
         $filter_caption =' And req.caption like \'%'.$_POST['filter_caption'].'%\'';
+        $_SESSION['filter_caption_request'] = $_POST['filter_caption'];
+    }
+    else if($_POST['filter_caption']=='')
+    {
+        $_SESSION['filter_caption_request'] = null;
     }
 
     //Краткое описание filter_short_description
     $filter_short_description = '';
     if(isset($_POST['filter_short_description']) and $_POST['filter_short_description']!='') {
         $filter_caption =' And req.short_description like \'%'.$_POST['filter_short_description'].'%\'';
+        $_SESSION['filter_short_description_request'] = $_POST['filter_short_description'];
+    }
+    else if($_POST['filter_short_description']=='')
+    {
+        $_SESSION['filter_short_description_request'] = null;
     }
 
     //Создатель обращения
@@ -125,6 +140,12 @@ and fk_role_id =3 and email='" . $userCreate . "'");
          $resultUserCreateID = $userCreateID['user_id'];
 
          $filter_user_create_id= ' And req.fk_create_user_id='.$resultUserCreateID;
+
+         $_SESSION['filter_user_create_request'] = $userCreateID['user_id'];
+     }
+     else if ($_POST['option1']=='Все пользователи')
+     {
+         $_SESSION['filter_user_create_request'] = null;
      }
 
     //Исполнитель обращения
@@ -145,30 +166,59 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $resultUserResponsID = $userResponsID['user_id'];
 
         $filter_user_respons_id= ' And req.fk_responsible_user_id='.$resultUserResponsID;
+
+        $_SESSION['filter_user_response_request'] = $userResponsID['user_id'];
+    }
+    else if ($_POST['option2']=='Все исполнители')
+    {
+        $_SESSION['filter_user_response_request'] = null;
     }
 
     //Дата создания от
     $filter_date_create_begin = '';
     if(isset($_POST['filter_date_create_begin']) and $_POST['filter_date_create_begin']!='' and $_POST['filter_date_create_begin']!='дд.мм.гггг') {
         $filter_date_create_begin =' And req.date_create >=\''.$_POST['filter_date_create_begin'].'T00:00:00\' ';
+
+        $_SESSION['filter_date_create_begin_request'] = $_POST['filter_date_create_begin'];
+    }
+    else if ($_POST['filter_date_create_begin']=='' || $_POST['filter_date_create_begin']=='дд.мм.гггг')
+    {
+        $_SESSION['filter_date_create_begin_request'] = null;
     }
 
     //Дата создания до
     $filter_date_create_end = '';
     if(isset($_POST['filter_date_create_end']) and $_POST['filter_date_create_end']!='' and $_POST['filter_date_create_end']!='дд.мм.гггг') {
         $filter_date_create_end =' And req.date_create <=\''.$_POST['filter_date_create_end'].'T23:59:59\' ';
+
+        $_SESSION['filter_date_create_end_request'] = $_POST['filter_date_create_end'];
+    }
+    else if ( $_POST['filter_date_create_end']=='' || $_POST['filter_date_create_end']=='дд.мм.гггг')
+    {
+        $_SESSION['filter_date_create_end_request'] = null;
     }
 
     //Дата решения от
     $filter_date_resolve_begin = '';
     if(isset($_POST['filter_date_resolve_begin']) and $_POST['filter_date_resolve_begin']!='' and $_POST['filter_date_resolve_begin']!='дд.мм.гггг') {
         $filter_date_resolve_begin =' And req.date_resolve >=\''.$_POST['filter_date_resolve_begin'].'T00:00:00\' ';
-    }
 
+        $_SESSION['filter_date_resolve_begin_request'] = $_POST['filter_date_resolve_begin'];
+    }
+    else if ($_POST['filter_date_resolve_begin']=='' || $_POST['filter_date_resolve_begin']=='дд.мм.гггг')
+    {
+        $_SESSION['filter_date_resolve_begin_request'] = null;
+    }
     //Дата решения до
     $filter_date_resolve_end = '';
     if(isset($_POST['filter_date_resolve_end']) and $_POST['filter_date_resolve_end']!='' and $_POST['filter_date_resolve_end']!='дд.мм.гггг') {
         $filter_date_resolve_end =' And req.date_resolve <=\''.$_POST['filter_date_resolve_end'].'T23:59:59\' ';
+
+        $_SESSION['filter_date_resolve_end_request'] = $_POST['filter_date_resolve_end'];
+    }
+    else if ($_POST['filter_date_resolve_end']=='' || $_POST['filter_date_resolve_end']=='дд.мм.гггг')
+    {
+        $_SESSION['filter_date_resolve_end_request'] = null;
     }
 
 
@@ -316,6 +366,8 @@ and fk_role_id =2 and email='" . $userRespons . "'");
          $filtr .= $filter_priority_id; $filter_priority_id= '';
          $filtr .= $filter_service_id; $filter_service_id= '';
          $_SESSION['filter_requests'].= $filtr;
+
+         /*Переменные сессии чтобы просто отображать предыдущие введенные данные для фильтра*/
      }
      //можно если что еще ELSE запилить если надо будет
 
@@ -354,21 +406,31 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                 <div class="input">Фильтрация обращений
                     <div class="pole">
                         <label>Номер:</label>
-                        <div class="input"><input type="text" id="filter_request_id" name="filter_request_id"/></div>
+                        <div class="input"><input type="text" id="filter_request_id" name="filter_request_id" value="<?php echo $_SESSION['filter_request_id'] ?>"/></div>
                     </div>
                     <div class="pole">
                         <label>Заголовок:</label>
-                        <div class="input"><input type="text" id="filter_caption" name="filter_caption"/></div>
+                        <div class="input"><input type="text" id="filter_caption" name="filter_caption" value="<?php echo $_SESSION['filter_caption_request'] ?>"/></div>
                     </div>
                     <div class="pole">
                         <label>Краткое описание:</label>
-                        <div class="input"><input type="text" id="filter_short_description" name="filter_short_description"/></div>
+                        <div class="input"><input type="text" id="filter_short_description" name="filter_short_description" value="<?php echo $_SESSION['filter_short_description_request'] ?>"/></div>
                     </div>
 
                     <div class="pole">
                         <label>Создатель:</label>
                         <select name="option1" class="cellbut">
-                            <option selected >Все пользователи</option>
+                            <?php
+                           if($_SESSION['filter_user_create_request'] == null)
+                            {
+                                echo "<option selected >Все пользователи</option>";
+                            }
+                            else
+                            {
+                                echo "<option>Все пользователи</option>";
+                            }
+                            ?>
+
                             <?php //Option для выбора фильтра по создавшему заявку пользователю
 
                             $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userCreate from users where user_id >0 and fk_role_id =3");
@@ -376,7 +438,13 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                             for ($i=0; $i <$result_query_num_users; $i++)
                             {
                                 $result = mysqli_fetch_array($result_query_users);
-                                echo '<option > ' . $result['userCreate'] . '</option>';
+                                if($_SESSION['filter_user_create_request'] == $result['user_id'])
+                                {
+                                    echo '<option selected> ' . $result['userCreate'] . '</option>';
+                                }
+                                else {
+                                    echo '<option > ' . $result['userCreate'] . '</option>';
+                                }
 
                             }
                             ?>
@@ -385,7 +453,16 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                     <div class="pole">
                         <label>Исполнитель:</label>
                         <select name="option2" class="cellbut">
-                            <option selected >Все исполнители</option>
+                           <?php
+                            if($_SESSION['filter_user_response_request'] == null)
+                            {
+                                echo "<option selected >Все исполнители</option>";
+                            }
+                            else
+                            {
+                                echo "<option>Все исполнители</option>";
+                            }
+                            ?>
                             <?php //Option для выбора фильтра по создавшему заявку пользователю
 
                             $result_query_users = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userRespons from users where user_id >0 and fk_role_id =2");
@@ -393,7 +470,14 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                             for ($i=0; $i <$result_query_num_users; $i++)
                             {
                                 $result = mysqli_fetch_array($result_query_users);
-                                echo '<option > ' . $result['userRespons'] . '</option>';
+
+                                if($_SESSION['filter_user_response_request'] == $result['user_id'])
+                                {
+                                    echo '<option selected> ' . $result['userRespons'] . '</option>';
+                                }
+                                else {
+                                    echo '<option > ' . $result['userRespons'] . '</option>';
+                                }
 
                             }
                             ?>
@@ -401,15 +485,15 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                     </div>
                     <div class="pole">
                         <label>Дата создания от:</label>
-                        <div class="input"><input type="date" id="filter_date_create_begin" name="filter_date_create_begin"/></div>
+                        <div class="input"><input type="date" id="filter_date_create_begin" name="filter_date_create_begin" value="<?php echo $_SESSION['filter_date_create_begin_request'] ?>"/></div>
                         <label>Дата создания до:</label>
-                        <div class="input"><input type="date" id="filter_date_create_end" name="filter_date_create_end"/></div>
+                        <div class="input"><input type="date" id="filter_date_create_end" name="filter_date_create_end" value="<?php echo $_SESSION['filter_date_create_end_request'] ?>"/></div>
                     </div>
                     <div class="pole">
                         <label>Дата решения от:</label>
-                        <div class="input"><input type="date" id="filter_date_resolve_begin" name="filter_date_resolve_begin"/></div>
+                        <div class="input"><input type="date" id="filter_date_resolve_begin" name="filter_date_resolve_begin" value="<?php echo $_SESSION['filter_date_resolve_begin_request'] ?>"/></div>
                         <label>Дата решения до:</label>
-                        <div class="input"><input type="date" id="filter_date_resolve_end" name="filter_date_resolve_end"/></div>
+                        <div class="input"><input type="date" id="filter_date_resolve_end" name="filter_date_resolve_end" value="<?php echo $_SESSION['filter_date_resolve_end_request'] ?>"/></div>
 
                     </div>
                     <div class="pole">

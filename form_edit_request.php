@@ -164,7 +164,7 @@ where request_id > 0 and request_id ='".$request_id."'");
                 { /*Сделать проверку на текущий статус в заявке и выводимыми статусами*/
                     $result = mysqli_fetch_array($result_query_users);
 
-                    if($row_request['userCreateID'] == $result['user_id'])
+                    if($row_request['userResponsID'] == $result['user_id'])
                     {
                         echo '<option required="required" selected> ' . $result['userRespons'] . '</option>';
                     }

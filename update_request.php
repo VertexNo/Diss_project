@@ -571,7 +571,73 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         }
 
 //Запрос на изменение обращения в БД
+
+
+
         $result_query_insert = $mysqli->query("update requests set caption='" . $caption . "', short_description='" . $short_description . "', description='" . $description . "', fk_responsible_user_id='" . $resultUserResponsID ."' , date_start_work='".$date_start_work."', date_resolve='".$date_resolve. "', fk_status_id='" . $resultStatusID . "', fk_priority_id='" . $resultPriorityID . "', fk_service_id='" . $resultServiceID . "', evaluation_id='" .$resultEvaluationID. "'  where request_id='" . $_POST["request_id"] . "'");
+
+        /*коэффициенты для пользователя*/
+        $User_isBusyIngeneer = null;
+        $User_evaluationAverage = 0;
+        $User_isNewIgneneer = 0;
+        $User_distanceWork = null;
+        $User_workTime = null;
+
+        /*TODO: реализовать запись коэффициентов инженеров в зависимости от прогресса решения задач*/
+
+
+        /*Проверяем есть ли еще открытые задачи помимо этой. Если есть - то не ставим признак свободного инженера*/
+        $result_query_Count_open_requests = $mysqli->query("select count(Request_Id) as CountOpenRequests from requests where fk_status_ID in (2,3) and fk_responsible_user_id = '" . $resultUserResponsID . "' and Request_Id <> ".$_POST["request_id"]);
+        $CountOpenRequests = mysqli_fetch_assoc($result_query_Count_open_requests);
+        $resultCountOpenRequests = $CountOpenRequests['CountOpenRequests'];
+
+        /*Если помимо этой задаче нет еще открытых задач, проверяем статус и ставим признак свободности / занятости инженера*/
+        if($resultCountOpenRequests < 1) {
+            switch ($resultStatusID) {
+                case 0:
+                    $User_isBusyIngeneer = null; //незизвестно
+                case 1:
+                    $User_isBusyIngeneer = null; //ожидает исполнения
+                case 2:
+                    $User_isBusyIngeneer = 1; //в работе
+                case 3:
+                    $User_isBusyIngeneer = 1; //Требует уточнения
+                case 4:
+                    $User_isBusyIngeneer = null; //Решена
+                case 5:
+                    $User_isBusyIngeneer = null; //закрыта
+            }
+        }
+        else
+        {
+            $User_isBusyIngeneer = 1;
+        }
+
+        /*Рассчитываем новый коэффициент качества исполнения задач*/
+        $result_query_QualityWork = $mysqli->query("select sum(request_performance_evaluation.evaluation_score)/count(Request_Id) as NewQualityWork from requests 
+inner join request_performance_evaluation on requests.evaluation_id = request_performance_evaluation.evaluation_id
+where fk_status_ID in (4,5) and fk_responsible_user_id = ".$resultUserResponsID);
+        $CoefQualityWork = mysqli_fetch_assoc($result_query_QualityWork);
+        $User_evaluationAverage = $CoefQualityWork['NewQualityWork'];
+
+        /*Рассчитываем время исполнения последней / текущей заявки*/
+        if($resultStatusID == 4)
+        {
+            $result_query_TimeWork = $mysqli->query("select TIMEDIFF(date_resolve,date_start_work) as TimeWork from requests 
+where fk_status_ID in (4,5) and fk_responsible_user_id = ".$resultUserResponsID. " and request_id =".$_POST["request_id"]);
+            $TimeWork = mysqli_fetch_assoc($result_query_TimeWork);
+            $User_workTime = $TimeWork['TimeWork'];
+
+           // $User_workTime = $date_resolve->diff( $date_start_work )->format("%h:%i:%s");
+
+
+
+           // $User_workTime = $User_workTime -> format("H:i:s");
+        }
+
+        /*Здесь обновление коэфициентов на новые*/
+        $result_query_insert_user = $mysqli->query("update users set 	k1_busy_employee='" . $User_isBusyIngeneer . "', k2_quality_work='" . $User_evaluationAverage . "', k3_new_employee='" . $User_isNewIgneneer . "', k4_distance_work='" . $User_distanceWork ."' , k5_execution_time='".$User_workTime."'  where user_id='" . $resultUserResponsID . "'");
+
 
         if (!$result_query_insert) {
             // Сохраняем в сессию сообщение об ошибке.

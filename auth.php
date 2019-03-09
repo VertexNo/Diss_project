@@ -15,6 +15,7 @@ $_SESSION["error_messages"] = '';
 
 //Объявляем ячейку для добавления успешных сообщений
 $_SESSION["success_messages"] = '';
+ini_set('session.bug_compat_warn', 0);
 /*
     Проверяем была ли отправлена форма, то есть была ли нажата кнопка Войти. Если да, то идём дальше, если нет, то выведем пользователю сообщение об ошибке, о том что он зашёл на эту страницу напрямую.
 */
@@ -176,6 +177,20 @@ if(isset($_POST["btn_submit_auth"]) && !empty($_POST["btn_submit_auth"])){
 
                 $_SESSION['filter_requests'] = '';
                 $_SESSION['order_requests'] = '';
+
+
+                /*Поля для простановки в шапку фильтрации*/
+                $_SESSION['filter_request_id'] = null;
+                $_SESSION['filter_caption_request'] = null;
+                $_SESSION['filter_short_description_request'] = null;
+                $_SESSION['filter_user_create_request'] = null;
+                $_SESSION['filter_user_response_request'] = null;
+
+                $_SESSION['filter_date_create_begin_request'] = null;
+                $_SESSION['filter_date_create_end_request'] = null;
+
+                $_SESSION['filter_date_resolve_begin_request'] = null;
+                $_SESSION['filter_date_resolve_end_request'] = null;
 
                 //Возвращаем пользователя на главную страницу
                 header("HTTP/1.1 301 Moved Permanently");
