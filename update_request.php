@@ -635,6 +635,61 @@ where fk_status_ID in (4,5) and fk_responsible_user_id = ".$resultUserResponsID.
            // $User_workTime = $User_workTime -> format("H:i:s");
         }
 
+        /*Рассчитываем расстояние до места исполнения заявки*/
+        //TODO: Если статус в "ожидает исполнения" или "в работе" ставим километраж. Если другой статус - ставим Null.
+
+        /*Если пользователи от одной организации то рассчитываем дистанцию. Т.к можем. Иначе - нет*/
+        /*TODO: сделать проверку что юзер и инженер от одной организации*/
+
+        //Ищем ID пользователя, создавшего заявку
+        $result_query_user_create = $mysqli->query("select fk_create_user_id from requests
+where request_id = ".$_POST["request_id"]);
+        $UserCr = mysqli_fetch_assoc($result_query_user_create);
+        $UserCreateID = $UserCr['fk_create_user_id'];
+
+
+
+
+        /*ищем расстояние от головного офиса для пользователя создавшего заявку (П1)*/
+        $result_query_user_org = $mysqli->query("select fk_organisation_id from users
+where user_id = ".$UserCreateID);
+        $UserOrg = mysqli_fetch_assoc($result_query_user_org);
+        $User_Organisation = $UserOrg['fk_organisation_id'];
+
+        /*ищем расстояние от головного офиса для инженера, взявшего в работу заявку (И1)*/
+        $result_query_ingener_org = $mysqli->query("select fk_organisation_id from users
+where user_id = ".$resultUserResponsID);
+        $IngenerOrg = mysqli_fetch_assoc($result_query_ingener_org);
+        $Ingener_Organisation = $IngenerOrg['fk_organisation_id'];
+
+        if($User_Organisation == $Ingener_Organisation)
+        {
+            if ($resultStatusID == 2 || $resultStatusID == 3)
+            {
+                /*ищем расстояние от головного офиса для пользователя создавшего заявку (П1)*/
+                $result_query_user_distance = $mysqli->query("select mo_distance from users
+inner join office on users.fk_office_id = office.office_id
+where Users.User_id = " . $UserCreateID);
+                $CoefUserDistance = mysqli_fetch_assoc($result_query_user_distance);
+                $User_DistanceResult = $CoefUserDistance['mo_distance'];
+
+                /*ищем расстояние от головного офиса для инженера, взявшего в работу заявку (И1)*/
+                $result_query_ingener_distance = $mysqli->query("select mo_distance from users
+inner join office on users.fk_office_id = office.office_id
+where Users.User_id =" . $resultUserResponsID);
+                $CoefIngenerDistance = mysqli_fetch_assoc($result_query_ingener_distance);
+                $Ingener_DistanceResult = $CoefIngenerDistance['mo_distance'];
+
+                /*TODO: рассчитываем расстояние: abs(Расстояние П1 -  Расстояние И1)*/
+                $User_distanceWork = abs($User_DistanceResult - $Ingener_DistanceResult);
+            }
+            else
+                {
+                $k4_distance_work = null;
+            }
+        }
+
+
         /*Здесь обновление коэфициентов на новые*/
         $result_query_insert_user = $mysqli->query("update users set 	k1_busy_employee='" . $User_isBusyIngeneer . "', k2_quality_work='" . $User_evaluationAverage . "', k3_new_employee='" . $User_isNewIgneneer . "', k4_distance_work='" . $User_distanceWork ."' , k5_execution_time='".$User_workTime."'  where user_id='" . $resultUserResponsID . "'");
 

@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6186d9fc-d06e-4918-a73e-03153c59eeac" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/auth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/form_edit_request.php" beforeDir="false" afterPath="$PROJECT_DIR$/form_edit_request.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/form_request.php" beforeDir="false" afterPath="$PROJECT_DIR$/form_request.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/register.php" beforeDir="false" afterPath="$PROJECT_DIR$/register.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/update_request.php" beforeDir="false" afterPath="$PROJECT_DIR$/update_request.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,7 +15,7 @@
     <session id="249238682">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="20" />
+          <entry key="project.closed" value="22" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.103" value="1" />
           <entry key="project.open.time.107" value="1" />
@@ -42,8 +38,10 @@
           <entry key="project.open.time.78" value="1" />
           <entry key="project.open.time.81" value="1" />
           <entry key="project.open.time.83" value="1" />
+          <entry key="project.open.time.90" value="1" />
           <entry key="project.open.time.91" value="1" />
-          <entry key="project.opened" value="24" />
+          <entry key="project.open.time.98" value="1" />
+          <entry key="project.opened" value="26" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -67,7 +65,7 @@
           <entry key="css" value="766" />
           <entry key="html" value="9" />
           <entry key="js" value="16" />
-          <entry key="php" value="16590" />
+          <entry key="php" value="17530" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -75,7 +73,7 @@
           <entry key="CSS" value="766" />
           <entry key="HTML" value="10" />
           <entry key="JavaScript" value="16" />
-          <entry key="PHP" value="16539" />
+          <entry key="PHP" value="17479" />
           <entry key="SQL" value="50" />
         </counts>
       </usages-collector>
@@ -86,7 +84,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/form_edit_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="1717">
               <caret line="101" column="154" selection-start-line="101" selection-start-column="101" selection-end-line="101" selection-end-column="154" />
             </state>
           </provider>
@@ -95,7 +93,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/form_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
+            <state relative-caret-position="3706">
               <caret line="218" column="53" selection-start-line="218" selection-start-column="53" selection-end-line="218" selection-end-column="53" />
             </state>
           </provider>
@@ -110,19 +108,19 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/update_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10336">
-              <caret line="613" column="9" lean-forward="true" selection-start-line="613" selection-start-column="9" selection-end-line="613" selection-end-column="9" />
+            <state relative-caret-position="-401">
+              <caret line="683" column="89" selection-start-line="683" selection-start-column="89" selection-end-line="683" selection-end-column="89" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/auth.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
+            <state relative-caret-position="-1224">
               <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
             </state>
           </provider>
@@ -140,7 +138,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/register.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
+            <state relative-caret-position="6613">
               <caret line="394" column="298" selection-start-line="394" selection-start-column="298" selection-end-line="394" selection-end-column="298" />
             </state>
           </provider>
@@ -186,9 +184,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>запол</find>
-      <find>заполните</find>
-      <find>form_reg</find>
       <find>заполни</find>
       <find>leng</find>
       <find>option1</find>
@@ -216,6 +211,9 @@
       <find>$_SESSION['filter_user_create_request']</find>
       <find>$row_request</find>
       <find>Отфиль</find>
+      <find>ResultUser</find>
+      <find>Create</find>
+      <find>Respo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -260,9 +258,9 @@
         <option value="$PROJECT_DIR$/check_status.php" />
         <option value="$PROJECT_DIR$/register.php" />
         <option value="$PROJECT_DIR$/form_edit_request.php" />
-        <option value="$PROJECT_DIR$/update_request.php" />
         <option value="$PROJECT_DIR$/form_request.php" />
         <option value="$PROJECT_DIR$/auth.php" />
+        <option value="$PROJECT_DIR$/update_request.php" />
       </list>
     </option>
   </component>
@@ -392,16 +390,18 @@
       <workItem from="1550934495628" duration="4284000" />
       <workItem from="1551527517852" duration="598000" />
       <workItem from="1552127694187" duration="15610000" />
+      <workItem from="1552210825104" duration="596000" />
+      <workItem from="1552222598805" duration="2518000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="189685000" />
+    <option name="totallyTimeSpent" value="192799000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23600605" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24357034" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -588,6 +588,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/form_edit_request.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1717">
+          <caret line="101" column="154" selection-start-line="101" selection-start-column="101" selection-end-line="101" selection-end-column="154" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/form_request.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3706">
+          <caret line="218" column="53" selection-start-line="218" selection-start-column="53" selection-end-line="218" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/check_status.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -599,6 +613,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
           <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/register.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6613">
+          <caret line="394" column="298" selection-start-line="394" selection-start-column="298" selection-end-line="394" selection-end-column="298" />
         </state>
       </provider>
     </entry>
@@ -623,38 +644,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/register.php">
+    <entry file="file://$PROJECT_DIR$/auth.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="394" column="298" selection-start-line="394" selection-start-column="298" selection-end-line="394" selection-end-column="298" />
+        <state relative-caret-position="-1224">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/update_request.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10336">
-          <caret line="613" column="9" lean-forward="true" selection-start-line="613" selection-start-column="9" selection-end-line="613" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/form_edit_request.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="101" column="154" selection-start-line="101" selection-start-column="101" selection-end-line="101" selection-end-column="154" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/form_request.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="218" column="53" selection-start-line="218" selection-start-column="53" selection-end-line="218" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/auth.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="-401">
+          <caret line="683" column="89" selection-start-line="683" selection-start-column="89" selection-end-line="683" selection-end-column="89" />
         </state>
       </provider>
     </entry>
