@@ -9,13 +9,22 @@
     font: 14px/18px Arial, Tahoma, sans-serif;
     color: #444;
 }
+#form_request .MainHeaderLabel {
+    margin: 0 0 10px;
+    font: 18px Arial, Tahoma, sans-serif;
+
+}
+#form_request .HeadersLabel {
+    margin: 25px 25px 100px;
+    font: 15px Arial, Tahoma, sans-serif;
+}
 #form_request .pole {
     margin: 0 0 18px;
 }
 #form_request .pole label {
-    display: block;
-    margin: 0 0 11px;
-}
+     display: block;
+     margin: 0 0 11px;
+ }
 #form_request .pole .input {
     border-radius: 4px;
 }

@@ -88,10 +88,11 @@ where request_id > 0 and request_id ='".$request_id."'");
 
     ?>
     <!-- Сделать проверку. Если в статусе закрыто - то сделать поля неактивными -->
-    <br><h1> Авторизованы</h1>
+    <br><br>
     <form action="update_request.php" id="form_request" method="post">
         <div class="input">
-        Редактирование обращения
+            <label class = "MainHeaderLabel">Редактирование обращения</label><br><br>
+            <hr><br>
             <?php
             if($row_request['status_id']==5)
             {
@@ -103,12 +104,12 @@ where request_id > 0 and request_id ='".$request_id."'");
             <div class="input"><input type="text" hidden id="date_resolve" name="date_resolve" value="<?php echo $row_request['date_resolve'] ?>"/></div>
 
             <div class="pole">
-                <label>Номер:</label>
+                <label class = "HeadersLabel">Номер:</label>
                 <div class="input"><input readonly type="text" id="request_id" required="required" name="request_id" value="<?php echo $request_id ?>"/></div>
 
         </div>
         <div class="pole">
-            <label>Заголовок:</label>
+            <label class = "HeadersLabel">Заголовок:</label>
             <div class="input"><input type="text" id="caption" required="required" name="caption" value="<?php echo $row_request['caption']?>"
                 <?php
                 if($row_request['status_id']==5)
@@ -120,7 +121,7 @@ where request_id > 0 and request_id ='".$request_id."'");
         </div>
 
         <div class="pole">
-            <label>Краткое описание:</label>
+            <label class = "HeadersLabel">Краткое описание:</label>
             <div class="input"><input type="text"  id="short_description" required="required" name="short_description" value="<?php echo $row_request['short_description'] ?>"
                     <?php
                     if($row_request['status_id']==5)
@@ -132,7 +133,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <span id="valid_short_description_message" class="mesage_error"></span>
         </div>
         <div class="pole">
-            <label>Полное описание проблемы:</label>
+            <label class = "HeadersLabel">Полное описание проблемы:</label>
             <div class="input"><textarea id="description" required="required" name="description"
                     <?php
                     if($row_request['status_id']==5)
@@ -144,7 +145,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <span id="valid_description_message" class="mesage_error"></span>
         </div>
         <div class="pole">
-            <label>Желаемый исполнитель:</label>
+            <label class = "HeadersLabel">Текущий исполнитель:</label>
             <?php
             if($row_request['status_id']==5)
             {
@@ -232,7 +233,7 @@ where request_id > 0 and request_id ='".$request_id."'");
 
 
         <div class="pole">
-            <label>Приоритет:</label>
+            <label class = "HeadersLabel">Приоритет:</label>
             <?php
             if($row_request['status_id']==5)
             {
@@ -266,7 +267,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             </select>
         </div>
         <div class="pole">
-            <label>Тип проблемы / услуги:</label>
+            <label class = "HeadersLabel">Тип проблемы / услуги:</label>
             <?php
             if($row_request['status_id']==5)
             {
@@ -337,8 +338,8 @@ where request_id > 0 and request_id ='".$request_id."'");
     </form>
 
     <?php
-    echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
-    echo 'user_id'.$_SESSION['user_id'];
+    /*echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
+    echo 'user_id'.$_SESSION['user_id'];*/
 
     $mysqli->close();
     ?>

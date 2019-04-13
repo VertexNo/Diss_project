@@ -1,5 +1,5 @@
 #form_request {
-    width: 700px;
+    width: 1200px;
     padding: 24px 24px 0;
     margin: 25px auto 0;
     background: #FEFEFE;
@@ -9,27 +9,179 @@
     font: 14px/18px Arial, Tahoma, sans-serif;
     color: #444;
 }
+#form_request .HeadersLabel {
+    margin: 25px 25px 100px;
+    font: 18px Arial, Tahoma, sans-serif;
+}
+#form_request .poleUsers {
+    margin: 11px 11px 20px;
+    display:  flex;
+}
+#form_request .polesmall {
+     margin: 11px 11px 11px;
+     display:  flex;
+ }
 #form_request .pole {
-    margin: 0 0 18px;
+    margin: 11px 11px 11px;
+    display:  flex;
 }
-#form_request .pole label {
+#form_request .polemedium {
+    margin: 11px 11px 11px;
+    display:  flex;
+}
+#form_request .poleSelect {
+    margin: 11px 11px 11px;
+    display:  flex;
+}
+#form_request .poledateCreate {
+     margin: 0 0 18px;
+     display:  flex;
+ }
+#form_request .poledateEnd {
+    margin: 0 5px 18px;
+    display:  flex;
+}
+#form_request .poledateCreate label {
+     display: block;
+     margin: 15px 15px 15px;
+ }
+#form_request .poledateEnd label {
     display: block;
-    margin: 0 0 11px;
+    margin: 15px 15px 15px;
 }
-#form_request .pole .input {
+#form_request .polemultiselect {
+    margin: 0 0 18px;
+    display:  flex;
+
+}
+#form_request .polemultiselect label {
+    display: block;
+    margin: 15px 15px 15px;
+}
+#form_request .polemultiselectSmall {
+    margin: 0 0 11px;
+    display:  flex;
+}
+#form_request .polemultiselectSmall label {
+    display: block;
+    margin: 15px 15px 15px;
+}
+#form_request .polemedium label {
+    display: block;
+    margin: 0 11px 11px;
+}
+#form_request .polesmall label {
+    display: block;
+    margin: 0 11px 11px;
+}
+#form_request .poleUsers label {
+    display: block;
+    margin: 0 11px 11px;
+}
+#form_request .polemedium .input {
     border-radius: 4px;
 }
-#form_request .pole input,textarea,select {
+#form_request .polesmall .input {
+    border-radius: 4px;
+}
+#form_request .poleUsers .input {
+    border-radius: 4px;
+}
+#form_request .polemedium input {
     font: 12px Arial, Tahoma, sans-serif;
     color: #444;
-    width: 450px;
+    width: 350px;
     padding: 9px 13px;
     border: 1px solid #D2D9DC;
     border-radius: 3px;
     box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
     outline: none;
 }
-#form_request .pole input:focus {
+#form_request .polesmall input {
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 100px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .poleUsers select {
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 230px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .pole select {
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 200px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .pole textarea {
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 300px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .poledateCreate input{
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 130px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .poledateEnd input{
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 130px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .polemultiselect select{
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 400px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .polemultiselectSmall select{
+    font: 12px Arial, Tahoma, sans-serif;
+    color: #444;
+    width: 200px;
+    padding: 9px 13px;
+    border: 1px solid #D2D9DC;
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 0 5px #F7F9FA;
+    outline: none;
+}
+#form_request .polemedium input:focus {
+     border-color: #B7D4EA;
+     box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 4px #D0E6F6, 0 0 0 5px #F2F8FC;
+ }
+#form_request .polesmall input:focus {
     border-color: #B7D4EA;
     box-shadow: inset 2px 2px 6px #EBEBEB, 0 0 4px #D0E6F6, 0 0 0 5px #F2F8FC;
 }

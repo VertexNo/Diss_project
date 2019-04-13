@@ -398,25 +398,30 @@ and fk_role_id =2 and email='" . $userRespons . "'");
     </script>
     <!-- ФОРМА ФИЛЬТРАЦИИ ОБРАЩЕНИЙ  -->
     <div>
-        <a href="" class="spoiler_links">Фильтрация обращений</a>
+        <br>
+        <a class="spoiler_links" style="vertical-align:middle">Фильтр</a><br>
         <div class="spoiler_body">
             <form action="form_request.php" method="post" id="form_request">
 
-                <div class="input">Фильтрация обращений
+                <label class = "HeadersLabel">Фильтр по заголовкам</label><br><br>
+                <div class="input">
                     <div class="pole">
+                        <div class="polesmall">
                         <label>Номер:</label>
                         <div class="input"><input type="text" id="filter_request_id" name="filter_request_id" value="<?php echo $_SESSION['filter_request_id'] ?>"/></div>
-                    </div>
-                    <div class="pole">
+                        </div>
+
+                        <div class="polemedium">
                         <label>Заголовок:</label>
                         <div class="input"><input type="text" id="filter_caption" name="filter_caption" value="<?php echo $_SESSION['filter_caption_request'] ?>"/></div>
-                    </div>
-                    <div class="pole">
+
                         <label>Краткое описание:</label>
                         <div class="input"><input type="text" id="filter_short_description" name="filter_short_description" value="<?php echo $_SESSION['filter_short_description_request'] ?>"/></div>
+                        </div>
                     </div>
 
-                    <div class="pole">
+                    <hr><label class = "HeadersLabel">Фильтр по пользователям</label></hr><br><br>
+                    <div class="poleUsers">
                         <label>Создатель:</label>
                         <select name="option1" class="cellbut">
                             <?php
@@ -448,8 +453,6 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                             }
                             ?>
                         </select>
-                    </div>
-                    <div class="pole">
                         <label>Исполнитель:</label>
                         <select name="option2" class="cellbut">
                            <?php
@@ -482,20 +485,25 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                             ?>
                         </select>
                     </div>
-                    <div class="pole">
+                    <hr><label class = "HeadersLabel">Фильтр по датам</label></hr><br><br>
+                    <div class="poledateCreate">
                         <label>Дата создания от:</label>
                         <div class="input"><input type="date" id="filter_date_create_begin" name="filter_date_create_begin" value="<?php echo $_SESSION['filter_date_create_begin_request'] ?>"/></div>
                         <label>Дата создания до:</label>
                         <div class="input"><input type="date" id="filter_date_create_end" name="filter_date_create_end" value="<?php echo $_SESSION['filter_date_create_end_request'] ?>"/></div>
                     </div>
-                    <div class="pole">
+                    <div class="poledateEnd">
                         <label>Дата решения от:</label>
                         <div class="input"><input type="date" id="filter_date_resolve_begin" name="filter_date_resolve_begin" value="<?php echo $_SESSION['filter_date_resolve_begin_request'] ?>"/></div>
                         <label>Дата решения до:</label>
                         <div class="input"><input type="date" id="filter_date_resolve_end" name="filter_date_resolve_end" value="<?php echo $_SESSION['filter_date_resolve_end_request'] ?>"/></div>
 
                     </div>
-                    <div class="pole">
+
+                    <hr><label class = "HeadersLabel">Фильтр по дополнительным данным</label></hr><br><br>
+                    <div class="poleSelect">
+
+                        <div class="polemultiselectSmall">
                         <label>Статус:</label>
                         <select name="status[]" class="cellbut" multiple="yes" >
                         <option selected >Все статусы</option>
@@ -509,8 +517,7 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                         }
                         ?>
                         </select>
-                    </div>
-                    <div class="pole">
+
                         <label>Приоритет:</label>
                         <select name="priority[]" class="cellbut" multiple="yes">
                         <option selected >Все приоритеты</option>
@@ -524,9 +531,9 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                         }
                         ?>
                         </select>
-                    </div>
+                        </div>
 
-                    <div class="pole">
+                        <div class="polemultiselect">
                         <label>Тип проблемы / услуги:</label>
                         <select name="service[]" class="cellbut" multiple="yes">
                         <option selected >Все типы услуг</option>
@@ -560,12 +567,12 @@ and fk_role_id =2 and email='" . $userRespons . "'");
 
                         ?>
                         </select>
+                        </div>
                     </div>
-
-
-
-
                 </div>
+
+
+
 
                 <div class="sub">
                     <input name="filter_submit" type="submit" value="Отфильтровать"/>

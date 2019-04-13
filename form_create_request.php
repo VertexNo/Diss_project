@@ -44,9 +44,11 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
     $fk_status_id = 1;
     ?>
     <!-- Сделать проверку. Если в статусе закрыто - то сделать поля неактивными -->
-    <br><h1> Авторизованы</h1>
+    <br><br>
     <form action="create_request.php" id="form_request" method="post">
-        <div class="input">            Создать обращение
+        <div class="input">
+            <label class = "MainHeaderLabel">Создать обращение</label><br><br>
+            <hr><br>
 
             <!--Скрытые поля для того чтобы потом добавить в базу -->
             <div class="input" hidden><input type="text" hidden id="fk_create_user_id" required="required" name="fk_create_user_id" value="<?php echo $fk_create_user_id?>"/></div>
@@ -55,23 +57,23 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
 
 
             <div class="pole">
-                <label>Заголовок:</label>
+                <label class = "HeadersLabel">Заголовок:</label>
                 <div class="input"><input type="text" id="caption" required="required" name="caption" value="<?php echo $caption?>"/></div>
                 <span id="valid_caption_message" class="mesage_error"></span>
             </div>
 
             <div class="pole">
-                <label>Краткое описание:</label>
+                <label class = "HeadersLabel">Краткое описание:</label>
                 <div class="input"><input type="text"  id="short_description" required="required" name="short_description" value="<?php echo $short_description ?>"/></div>
                 <span id="valid_short_description_message" class="mesage_error"></span>
             </div>
             <div class="pole">
-                <label>Полное описание проблемы:</label>
+                <label class = "HeadersLabel">Полное описание проблемы:</label>
                 <div class="input"><textarea id="description" required="required" name="description"> <?php echo $description ?> </textarea></div>
                 <span id="valid_description_message" class="mesage_error"></span>
             </div>
             <div class="pole">
-                <label>Исполнитель:</label>
+                <label class = "HeadersLabel">Желаемый исполнитель:</label>
                 <select name="option3" class="cellbut">
                 <!--<select name="option3" class="cellbut">-->
                 <?php //Option для выбора пользователя
@@ -90,7 +92,7 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
 
 
             <div class="pole">
-                <label>Приоритет:</label>
+                <label  class = "HeadersLabel">Приоритет:</label>
                 <?php
                     echo '<select name="option2" class="cellbut">';
                 ?>
@@ -110,7 +112,7 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
                 </select>
             </div>
             <div class="pole">
-                <label>Тип проблемы / услуги:</label>
+                <label  class = "HeadersLabel">Тип проблемы / услуги:</label>
                 <?php
                     echo '<select name="option4" class="cellbut">';
                 ?>
@@ -159,8 +161,8 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
     </form>
 
     <?php
-    echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
-    echo 'user_id'.$_SESSION['user_id'];
+   /* echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
+    echo 'user_id'.$_SESSION['user_id'];*/
 
     $mysqli->close();
     ?>
