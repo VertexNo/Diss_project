@@ -7,7 +7,7 @@
  */
 require_once("dbconnect.php"); // подключаем содержимое файла text.php
 require_once("header.php");
-
+ini_set('session.bug_compat_warn', 0);
 ?>
 <link rel="stylesheet" type="text/css" href="css/filter_request_style.css">
 <div class="block_for_messages">
@@ -35,8 +35,7 @@ require_once("header.php");
 if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk_Role_id'])==1*/){ //убрал "НЕ"
     ?>
 
-    <br><h1>Авторизованы</h1>
-    <button onclick="location.href='./form_create_request.php'">Создать обращение</button>
+    <br><br>
      <?php //ПРЕФИЛЬТР
 
     $query="
@@ -375,7 +374,7 @@ and fk_role_id =2 and email='" . $userRespons . "'");
     $_SESSION['order_requests']='';
     $_SESSION['order_requests'].=$orderBy;
     $query.=$_SESSION['filter_requests'];
-
+/*
 
     echo 'FILTER=';
     echo $_SESSION['filter_requests'];
@@ -385,7 +384,7 @@ and fk_role_id =2 and email='" . $userRespons . "'");
 
     echo $filter_request_id;
     echo $query;
-
+*/
 
     ?>
     <!-- Скрипт для скрывающей панели -->
@@ -834,7 +833,7 @@ where request_id > 0";
 
 // __________________ конец блока 2 __________________
 
-
+/*
 echo '<br>'.$query;
     echo '<br>$num'. $num;
     echo '<br>$quantity'. $quantity;
@@ -845,7 +844,7 @@ echo '<br>'.$query;
 
 
     echo '<br>fk_Role_id'.$_SESSION['fk_Role_id'];
-    echo '<br>user_id'.$_SESSION['user_id'];
+    echo '<br>user_id'.$_SESSION['user_id'];*/
 
     $mysqli->close();
     ?>

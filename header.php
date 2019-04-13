@@ -203,6 +203,7 @@ session_start();
             //Если пользователь авторизован, то выводим ссылку Выход
             ?>
                 <li> <a href="./form_request.php">Обращения</a></li>
+                <li> <a href="./form_create_request.php">Создать обращение</a></li>
                 <div id="auth_block">
             <?php
             if(($_SESSION['fk_Role_id'])==1) {
