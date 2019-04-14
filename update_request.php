@@ -530,6 +530,9 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $evaluationid = mysqli_fetch_assoc($result_query_Evaluation_id);
         $resultEvaluationID = $evaluationid['evaluation_id'];
 
+
+
+
         //приоритет
         $priorityname = trim($_POST["option2"]);
         $priorityname = htmlspecialchars($priorityname, ENT_QUOTES);

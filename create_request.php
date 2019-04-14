@@ -642,6 +642,45 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $serviceid = mysqli_fetch_assoc($result_query_Service_id);
         $resultServiceID = $serviceid['service_id'];
 
+
+        //Основная логика по распределению заявок на инженеров (метод Монте-Карло + стопка книг)*********************
+        //$resultUserResponsID -> Текущий выбранный желаемый исполнитель
+        $SelectedResponsible = $resultUserResponsID;
+        $queryResponsible = $mysqli->query("
+       select t.user_id as MostOptimalResponsible, t.koef as Koefitient from (
+select user_id,count(request_id) as CountResolvedRequests,SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id)) as AverageExecutionTime,sum(request_performance_evaluation.evaluation_score)/count(request_id) as AverageEvaluattion,
+(count(request_id)*sum(request_performance_evaluation.evaluation_score)/count(request_id))/TIME_TO_SEC(SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id))) as koef
+from users
+inner join requests on requests.fk_responsible_user_id = users.user_id
+inner join request_performance_evaluation on request_performance_evaluation.evaluation_id = requests.evaluation_id
+inner join service on service.service_id = requests.fk_service_id
+and requests.fk_service_id =".$resultServiceID."
+and requests.fk_status_id = 5
+group by user_id
+order by koef desc) t
+ LIMIT 0,1");
+
+        if($queryResponsible != null)
+        {
+            $CalculatedOptimalResponsible = mysqli_fetch_assoc($queryResponsible);
+            $OptimalResponsibleID = $CalculatedOptimalResponsible['MostOptimalResponsible'];
+
+            if($OptimalResponsibleID != null){
+                $resultUserResponsID = $OptimalResponsibleID;
+            }
+        }
+
+
+
+
+
+
+
+        //Конец логики распределения заявок*********************************
+
+
+
+
 //Запрос на создание обращения в БД
         $result_query_insert = $mysqli->query("insert into requests (request_id,caption,short_description, description,
 fk_create_user_id, fk_responsible_user_id, date_create, fk_status_id, fk_priority_id, fk_service_id) values(null,'" . $caption . "', '" . $short_description . "', '" . $description ."' , '".$userCreate . "', '" . $resultUserResponsID ."','".$dateCreate. "', '" . $statusid . "', '" . $resultPriorityID . "', '" . $resultServiceID . "' )");
