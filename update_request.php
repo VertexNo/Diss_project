@@ -511,6 +511,8 @@ else {
         $userRespons = preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $userRespons, $matches2);
         $userRespons = $matches2[0][0];
 
+        $EmailUserRespons = $userRespons;
+
         $result_query_userRespons = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userRespons from users where user_id >0 
 and fk_role_id =2 and email='" . $userRespons . "'");
         $userResponsID = mysqli_fetch_assoc($result_query_userRespons);
@@ -708,6 +710,21 @@ where Users.User_id =" . $resultUserResponsID);
             //Останавливаем  скрипт
             exit();
         } else {
+
+            /*Сделать отправку письма о назначении заявки*/
+            //$EmailUserResponse
+            /*Отправка пьсма начало*/
+
+
+
+            $to = $EmailUserRespons;
+            $subject = "Автоматическая отправка уведомлений об изменении заявок";
+            $message = "Была изменена заявка с номером: ".$_POST["request_id"]."\nЗаголовком: ".$caption."\nКратким описанием: ".$short_description.
+            "\nТекущий статус заявки: ".$statusname."\nТекущий приоритет заявки: ".$priorityname;
+            $headers = "notification create requests";
+            mail ($to, $subject, $message, $headers);
+
+            /*Отправка письма конец*/
 
             $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br /><br />Обращение изменено</p>";
 

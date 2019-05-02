@@ -150,6 +150,24 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
                 ?>
                 </select>
             </div>
+            <div class="pole">
+                <label  class = "HeadersLabel">Метод распределения исполнителя:</label>
+                <?php
+                echo '<select name="option5" class="cellbut">';
+                ?>
+                <!--<select name="option2" class="cellbut">-->
+                <?php //Option для выбора приоритета
+
+                $result_query_method = $mysqli->query("select method_id,method_name from methods_set_responsible where method_id >0");
+                $result_query_num_method = mysqli_num_rows($result_query_method);
+                for ($i=0; $i <$result_query_num_method; $i++)
+                { /*Сделать проверку на текущий приоритет в заявке и выводимыми приоритетами*/
+                    $result = mysqli_fetch_array($result_query_method);
+                    echo '<option required="required"> '.$result['method_name'].'</option>';
+                }
+                ?>
+                </select>
+            </div>
         </div>
 
         <div class="sub">

@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6186d9fc-d06e-4918-a73e-03153c59eeac" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/create_request_TEST.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/check_status.php" beforeDir="false" afterPath="$PROJECT_DIR$/check_status.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_request.php" beforeDir="false" afterPath="$PROJECT_DIR$/create_request.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/form_create_request.php" beforeDir="false" afterPath="$PROJECT_DIR$/form_create_request.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/update_request.php" beforeDir="false" afterPath="$PROJECT_DIR$/update_request.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,13 +40,14 @@
           <entry key="project.open.time.70" value="2" />
           <entry key="project.open.time.72" value="1" />
           <entry key="project.open.time.74" value="2" />
+          <entry key="project.open.time.75" value="1" />
           <entry key="project.open.time.78" value="1" />
           <entry key="project.open.time.81" value="1" />
           <entry key="project.open.time.83" value="1" />
           <entry key="project.open.time.90" value="1" />
           <entry key="project.open.time.91" value="1" />
           <entry key="project.open.time.98" value="1" />
-          <entry key="project.opened" value="29" />
+          <entry key="project.opened" value="30" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -53,7 +55,7 @@
           <entry key="css" value="28" />
           <entry key="html" value="1" />
           <entry key="js" value="5" />
-          <entry key="php" value="132" />
+          <entry key="php" value="133" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -61,7 +63,7 @@
           <entry key="CSS" value="28" />
           <entry key="HTML" value="1" />
           <entry key="JavaScript" value="5" />
-          <entry key="PHP" value="132" />
+          <entry key="PHP" value="133" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -69,7 +71,7 @@
           <entry key="css" value="1213" />
           <entry key="html" value="9" />
           <entry key="js" value="16" />
-          <entry key="php" value="18570" />
+          <entry key="php" value="20210" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -77,7 +79,7 @@
           <entry key="CSS" value="1213" />
           <entry key="HTML" value="10" />
           <entry key="JavaScript" value="16" />
-          <entry key="PHP" value="18516" />
+          <entry key="PHP" value="20156" />
           <entry key="SQL" value="53" />
         </counts>
       </usages-collector>
@@ -88,8 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/form_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="401" column="69" selection-start-line="401" selection-start-column="69" selection-end-line="401" selection-end-column="69" />
+            <state relative-caret-position="187">
+              <caret line="443" column="35" selection-start-line="443" selection-start-column="35" selection-end-line="443" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -97,8 +99,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/form_create_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1055">
-              <caret line="143" column="33" lean-forward="true" selection-start-line="143" selection-start-column="33" selection-end-line="143" selection-end-column="33" />
+            <state relative-caret-position="-455">
+              <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -106,8 +108,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/create_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="650" column="89" lean-forward="true" selection-start-line="650" selection-start-column="89" selection-end-line="650" selection-end-column="89" />
+            <state relative-caret-position="211">
+              <caret line="847" column="79" selection-start-line="847" selection-start-column="79" selection-end-line="847" selection-end-column="79" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/create_request_TEST.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="98" column="47" selection-start-line="98" selection-start-column="47" selection-end-line="98" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -115,7 +126,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/form_edit_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
+            <state relative-caret-position="1513">
               <caret line="89" column="49" selection-start-line="89" selection-start-column="49" selection-end-line="89" selection-end-column="49" />
             </state>
           </provider>
@@ -124,11 +135,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/check_status.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="109">
+            <state relative-caret-position="1071">
               <caret line="68" column="50" selection-start-line="68" selection-start-column="50" selection-end-line="68" selection-end-column="50" />
-              <folding>
-                <element signature="n#style#0;n#select#0;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -154,8 +162,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/update_request.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="532" selection-start-line="532" selection-end-line="532" />
+            <state relative-caret-position="160">
+              <caret line="720" column="72" selection-start-line="720" selection-start-column="72" selection-end-line="720" selection-end-column="72" />
             </state>
           </provider>
         </entry>
@@ -173,15 +181,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fetch_row</find>
-      <find>fetch</find>
-      <find>3</find>
-      <find>mysqli_num_rows</find>
       <find>$this</find>
       <find>limit</find>
       <find>5</find>
       <find>$pages</find>
-      <find>email</find>
       <find>disab</find>
       <find>update</find>
       <find>$filter_user_respons_id</find>
@@ -203,6 +206,11 @@
       <find>spoiler_links</find>
       <find>evaluation</find>
       <find>оцени</find>
+      <find>Create_request</find>
+      <find>email</find>
+      <find>fk_create_user_id</find>
+      <find>$userCreate</find>
+      <find>Email</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -243,12 +251,13 @@
         <option value="$PROJECT_DIR$/header.php" />
         <option value="$PROJECT_DIR$/css/create_edit_request_style.css" />
         <option value="$PROJECT_DIR$/form_edit_request.php" />
-        <option value="$PROJECT_DIR$/form_create_request.php" />
         <option value="$PROJECT_DIR$/css/filter_request_style.css" />
         <option value="$PROJECT_DIR$/css/styles.css" />
         <option value="$PROJECT_DIR$/form_request.php" />
-        <option value="$PROJECT_DIR$/update_request.php" />
         <option value="$PROJECT_DIR$/check_status.php" />
+        <option value="$PROJECT_DIR$/create_request_TEST.php" />
+        <option value="$PROJECT_DIR$/form_create_request.php" />
+        <option value="$PROJECT_DIR$/update_request.php" />
         <option value="$PROJECT_DIR$/create_request.php" />
       </list>
     </option>
@@ -321,10 +330,11 @@
     <property name="settings.editor.selected.configurable" value="File.Encoding" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="Z:\home\localhost\www\NEW_PROJECT\css" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="Z:\home\localhost\www\NEW_PROJECT" />
       <recent name="Z:\home\localhost\www\NEW_PROJECT\css" />
     </key>
   </component>
@@ -389,16 +399,18 @@
       <workItem from="1555152479729" duration="10359000" />
       <workItem from="1555165849877" duration="1786000" />
       <workItem from="1555236398368" duration="4811000" />
+      <workItem from="1556783706924" duration="10765000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="209755000" />
+    <option name="totallyTimeSpent" value="220520000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2549168" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25869894" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -572,13 +584,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/form_request.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="401" column="69" selection-start-line="401" selection-start-column="69" selection-end-line="401" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/create_edit_request_style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -607,6 +612,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/form_edit_request.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1513">
+          <caret line="89" column="49" selection-start-line="89" selection-start-column="49" selection-end-line="89" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/check_status.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="68" column="50" selection-start-line="68" selection-start-column="50" selection-end-line="68" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/header.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3485">
@@ -621,41 +640,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/form_request.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="443" column="35" selection-start-line="443" selection-start-column="35" selection-end-line="443" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/create_request_TEST.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="98" column="47" selection-start-line="98" selection-start-column="47" selection-end-line="98" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/form_create_request.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1055">
-          <caret line="143" column="33" lean-forward="true" selection-start-line="143" selection-start-column="33" selection-end-line="143" selection-end-column="33" />
+        <state relative-caret-position="-455">
+          <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/update_request.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="532" selection-start-line="532" selection-end-line="532" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/form_edit_request.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="89" column="49" selection-start-line="89" selection-start-column="49" selection-end-line="89" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/check_status.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="68" column="50" selection-start-line="68" selection-start-column="50" selection-end-line="68" selection-end-column="50" />
-          <folding>
-            <element signature="n#style#0;n#select#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="160">
+          <caret line="720" column="72" selection-start-line="720" selection-start-column="72" selection-end-line="720" selection-end-column="72" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/create_request.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="650" column="89" lean-forward="true" selection-start-line="650" selection-start-column="89" selection-end-line="650" selection-end-column="89" />
+        <state relative-caret-position="211">
+          <caret line="847" column="79" selection-start-line="847" selection-start-column="79" selection-end-line="847" selection-end-column="79" />
         </state>
       </provider>
     </entry>
