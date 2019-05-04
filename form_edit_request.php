@@ -10,6 +10,7 @@ require_once("header.php");
 
 ?>
 <link rel="stylesheet" type="text/css" href="css/create_edit_request_style.css">
+<link rel="stylesheet" type="text/css" href="css/comments_style.css">
 <div class="block_for_messages">
     <?php
     //Если в сессии существуют сообщения об ошибках, то выводим их
@@ -89,7 +90,7 @@ where request_id > 0 and request_id ='".$request_id."'");
     ?>
     <!-- Сделать проверку. Если в статусе закрыто - то сделать поля неактивными -->
     <br><br>
-    <form action="update_request.php" id="form_request" method="post">
+    <form action="update_request.php" id="form_request" method="post" enctype="multipart/form-data">
         <div class="input">
             <label class = "MainHeaderLabel">Редактирование обращения</label><br><br>
             <hr><br>
@@ -317,6 +318,26 @@ where request_id > 0 and request_id ='".$request_id."'");
                 ?>
             </select>
         </div>
+            <div class="pole">
+                <label class = "HeadersLabel">Напишите ваш комментарий к задаче:</label>
+                <div class="input"><textarea id="current_comment" name="current_comment"></textarea></div>
+                <span id="valid_description_message" class="mesage_error"></span>
+            </div>
+
+            <div class="pole">
+                <label class = "HeadersLabel">Прикрепления:</label>
+            <?php //Вывод ссылок на прикрепления
+            $result_query_attachments = $mysqli->query("select attachment_url,attachment_name from Attachments where fk_request_id = ".$request_id);
+            $result_query_num_attachments = mysqli_num_rows($result_query_attachments);
+            for ($i=0; $i <$result_query_num_attachments; $i++)
+            {
+                $result = mysqli_fetch_array($result_query_attachments);
+                echo '<a href='.$result['attachment_url'].$result['attachment_name'].'>'.$result['attachment_name'].'</a><br>';
+            }
+            ?>
+            </div>
+            <input type="file" name="file[]" multiple>
+
         </div>
 
         <div class="sub">
@@ -336,10 +357,53 @@ where request_id > 0 and request_id ='".$request_id."'");
 
         </div>
     </form>
+    <!--/*Старт формы комментов*/-->
+        <?php
 
+        $query = "select comment_id,comment_text,comment_date, rf_user_id,users.last_name as last_name,users.first_name as first_name,users.email as email, rf_request_id 
+from comments 
+inner join users on comments.rf_user_id = users.user_id
+where rf_request_id=".$request_id." ORDER BY comment_id DESC ";
+
+
+        $result_query_requests = $mysqli->query($query);
+
+
+        $result_query_num_requests = mysqli_num_rows($result_query_requests);
+        ?>
+    <form action="update_request.php" id="form_comment" method="post" enctype="multipart/form-data">
+        <div class="input">
+            <div class="header">
+                <label class = "MainHeaderLabel">Комментарии к заявке</label><br><br></div>
+            <hr>
+
+        <?php
+        for ($i=0; $i <$result_query_num_requests; $i++)
+        {
+            $result = mysqli_fetch_array($result_query_requests);
+
+            //echo 'RequestId = '.$result['request_id'];
+            ?>
+            <div class="layout">
+                <div class="comm_date">
+                    <?php echo date("d.m.Y H:i:s", strtotime($result['comment_date']))?>
+                </div>
+                <div class="comm_user">
+                    <?php echo $result['last_name'].' '.$result['first_name'].' ('.$result['email'].')'?>
+                </div>
+                <div class="comm_text">
+                    <?php echo $result['comment_text']?>
+                </div>
+            </div>
+            <hr>
+            <br>
+            <?php
+        }
+        ?>
+
+        </div>
+    </form>
     <?php
-    /*echo 'fk_Role_id'.$_SESSION['fk_Role_id'];
-    echo 'user_id'.$_SESSION['user_id'];*/
 
     $mysqli->close();
     ?>

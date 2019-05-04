@@ -82,7 +82,7 @@ body
     text-align: center;
 }
 /*Оформление для таблицы*/
-table {width: 100%; border-collapse: collapse;}
+table {width: 100%; border-collapse: collapse; table-layout:fixed;}
 table thead tr {color: #ffffff; font-weight: bold; background: #3f4741; }
 table thead tr td {border: 2px solid #01ab73; }
 table tbody tr td {border: 2px solid #e8e9eb; }
@@ -95,6 +95,45 @@ table th{
     position: sticky;
     top: 45px;
 }
+table td
+{
+    overflow:hidden;
+}
+
+#request_id{
+    width: 4%;
+}
+#caption{
+    width: 10%;
+}
+#short_description{
+    width: 10%;
+}
+#date_create{
+    width: 6%;
+}
+#date_resolve{
+    width: 6%;
+}
+#userCreate{
+    width: 13%;
+}
+#userRespons{
+    width: 13%;
+}
+#organisation_name{
+    width: 10%;
+}
+#status_name{
+    width: 7%;
+}
+#priority_name{
+    width: 6%;
+}
+#service_name{
+    width: 15%;
+}
+
 
 /*Курсор делает вместо строкового редактирования - руку*/
 tr {cursor:pointer}

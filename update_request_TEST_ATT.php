@@ -713,23 +713,7 @@ where Users.User_id =" . $resultUserResponsID);
 
             /*Сделать отправку письма о назначении заявки*/
             //$EmailUserResponse
-            /*Отправка пьсма начало*/
 
-
-            if(!empty($_POST["current_comment"]))
-            {
-                $Comment = "Добавлен комментарий: ".$_POST["current_comment"];
-            }
-            else $Comment="";
-
-            $to = $EmailUserRespons;
-            $subject = "Автоматическая отправка уведомлений об изменении заявок";
-            $message = "Была изменена заявка с номером: ".$_POST["request_id"]."\nЗаголовком: ".$caption."\nКратким описанием: ".$short_description.
-            "\nТекущий статус заявки: ".$statusname."\nТекущий приоритет заявки: ".$priorityname."\n".$Comment;
-            $headers = "*************";
-            mail ($to, $subject, $message, $headers);
-
-            /*Отправка письма конец*/
 
             $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br /><br />Обращение №".$_POST["request_id"]." изменено</p>";
 
@@ -737,11 +721,8 @@ where Users.User_id =" . $resultUserResponsID);
             header("HTTP/1.1 301 Moved Permanently");
             header("Location: ".$address_site."/form_auth.php");*/
 
-            //Отправляем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: " . $address_site . "/form_edit_request.php?request=".$_POST["request_id"]);
-        }
 
+        }
 
         /*Логика по добавлению файлов*/
 
@@ -760,7 +741,9 @@ where Users.User_id =" . $resultUserResponsID);
 
 // Директория куда будут загружаться файлы.
         $path = __DIR__ . '/uploads/';
-
+        echo "<br>__DIR__=".__DIR__;
+        echo "<br>path=".$path;
+        echo "<br>inp_name=".$_FILES[$input_name];
         if (isset($_FILES[$input_name])) {
             // Проверим директорию для загрузки.
             if (!is_dir($path)) {
@@ -775,12 +758,15 @@ where Users.User_id =" . $resultUserResponsID);
             } else {
                 foreach($_FILES[$input_name] as $k => $l) {
                     foreach($l as $i => $v) {
+
                         $files[$i][$k] = $v;
                     }
                 }
             }
 
             foreach ($files as $file) {
+                echo "<br>FILETEMP=".$file['tmp_name'];
+                echo "<br>FILE=".$file['name'];
                 $error = $success = '';
 
                 // Проверим на ошибки загрузки.
@@ -804,9 +790,14 @@ where Users.User_id =" . $resultUserResponsID);
                 } else {
                     // Оставляем в имени файла только буквы, цифры и некоторые символы.
                     $pattern = "[^a-zа-яё0-9,~!@#%^-_\$\?\(\)\{\}\[\]\.]";
+
+                    echo "<br>Parts1=".$file['name'];
+
                     $name = str_replace($pattern, '-', $file['name']);
+
+                    echo "<br>Parts2=".$name;
+
                     $name = str_replace('[-]+', '-', $name);
-                    $name = str_replace(' ', '_', $name);
 
                     // Т.к. есть проблема с кириллицей в названиях файлов (файлы становятся недоступны).
                     // Сделаем их транслит:
@@ -826,8 +817,10 @@ where Users.User_id =" . $resultUserResponsID);
                         'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
                     );
 
+                    echo "<br>Parts=".$name;
                     $name = strtr($name, $converter);
                     $parts = pathinfo($name);
+                    echo "<br>Parts=".$name;
 
                     if (empty($name) || empty($parts['extension'])) {
                         $error = 'Недопустимое тип файла';
@@ -856,8 +849,10 @@ where Users.User_id =" . $resultUserResponsID);
 
                 // Выводим сообщение о результате загрузки.
                 if (!empty($success)) {
-                    $result_query_insert = $mysqli->query("insert into Attachments (attachment_id,attachment_url,attachment_name, fk_request_id)
-values(null,'"."uploads/"."', '".$name . "', '" . $_POST["request_id"]."' )");
+                    $result_query_insert = $mysqli->query("insert into Attachments (attachment_id,attachment_url, fk_request_id)
+values(null,'".$path.$file["file"]["name"] . "', '" . $_POST["request_id"]."' )");
+                    echo '<br>' . "insert into Attachments (attachment_id,attachment_url, fk_request_id)
+values(null,'".$path.$file["file"]["name"] . "', '" . $_POST["request_id"]."' )" . '</br>';
                 } else {
                     echo '<p>' . $error . '</p>';
                 }
@@ -865,18 +860,6 @@ values(null,'"."uploads/"."', '".$name . "', '" . $_POST["request_id"]."' )");
         }
 
         /*Логика по добавлению факлов конец*/
-
-        /*Логика добавления комментов начало*/
-
-        if(!empty($_POST["current_comment"]))
-        {
-            $result_query_insert = $mysqli->query("insert into comments (comment_id,comment_text,comment_date, rf_user_id, rf_request_id)
-values(null,'".$_POST["current_comment"]."', '".date("Y-m-d H:i:s")."', '".$_SESSION['user_id']."', '" . $_POST["request_id"]."' )");
-        }
-
-        /*Логика добавления комментов конец*/
-
-
 
 
         /* Завершение запроса */

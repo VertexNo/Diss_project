@@ -45,7 +45,7 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
     ?>
     <!-- Сделать проверку. Если в статусе закрыто - то сделать поля неактивными -->
     <br><br>
-    <form action="create_request.php" id="form_request" method="post">
+    <form action="create_request.php" id="form_request" method="post" enctype="multipart/form-data">
         <div class="input">
             <label class = "MainHeaderLabel">Создать обращение</label><br><br>
             <hr><br>
@@ -168,6 +168,7 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
                 ?>
                 </select>
             </div>
+            <input type="file" name="file[]" multiple>
         </div>
 
         <div class="sub">

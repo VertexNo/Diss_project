@@ -26,38 +26,8 @@ if(isset($_POST["cancel_request"]) && !empty($_POST["cancel_request"])){
     header("HTTP/1.1 301 Moved Permanently");
     header("Location: " . $address_site . "/form_request.php");
 }
-if(isset($_POST["reopen_request"]) && !empty($_POST["reopen_request"])){
-    $result_query = $mysqli->query("update requests set fk_status_id = 1  where request_id='".$_POST["request_id"]."'");
-    if (!$result_query) {
-        // Сохраняем в сессию сообщение об ошибке.
-        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на изменение пользователя в БД</p>";
-
-        //Возвращаем пользователя на страницу регистрации
-        header("HTTP/1.1 301 Moved Permanently");
-        header("Location: " . $address_site . "/form_register.php");
-
-        //Останавливаем  скрипт
-        exit();
-    } else {
-
-        $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br /><br />Обращение переоткрыто</p>";
-
-        /*//Отправляем пользователя на страницу авторизации
-        header("HTTP/1.1 301 Moved Permanently");
-        header("Location: ".$address_site."/form_auth.php");*/
-
-        //Отправляем пользователя на страницу регистрации
-        header("HTTP/1.1 301 Moved Permanently");
-        header("Location: " . $address_site . "/form_request.php");
-    }
-
-    /* Завершение запроса */
-    $result_query->close();
-
-
-}
 else {
-    if (isset($_POST["btn_update_request"]) && !empty($_POST["btn_update_request"])) {
+    if (isset($_POST["btn_create_request"]) && !empty($_POST["btn_create_request"])) {
 
         /* Проверяем если в глобальном массиве $_POST существуют данные отправленные из формы и заключаем переданные данные в обычные переменные.*/
 
@@ -191,17 +161,17 @@ else {
         }
 
         //Проверка на существование статуса
-        if (isset($_POST["option1"])) {
+        if (isset($_POST["fk_status_id"])) {
 
             //Обрезаем пробелы с начала и с конца строки
-            $status = trim($_POST["option1"]);
+            $status = trim($_POST["fk_status_id"]);
 
             if (!empty($status)) {
 
                 $status = htmlspecialchars($status, ENT_QUOTES);
 
 //Проверяем нет ли уже такого адреса в БД.
-                $result_query = $mysqli->query("select status_id,status_name from status where status_name='" . $status . "'");
+                $result_query = $mysqli->query("select status_id,status_name from status where status_id='" . $status . "'");
 
 //Если кол-во полученных строк меньше единицы, значит такого статуса нет
                 if ($result_query->num_rows < 1) {
@@ -328,7 +298,81 @@ else {
             exit();
         }
 
-        //Проверка на существование пользователя
+        /*111*/
+        //Проверка на существование создателя - пользователя
+        if (isset($_POST["fk_create_user_id"])) {
+
+            //Обрезаем пробелы с начала и с конца строки
+            $user = trim($_POST["fk_create_user_id"]);
+
+            if (!empty($user)) {
+
+                $user = htmlspecialchars($user, ENT_QUOTES);
+
+//Проверяем нет ли уже такого адреса в БД.//
+
+
+                $result_query = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userRespons from users where user_id >0 and user_id ='" . $user . "'");
+
+//Если кол-во полученных строк меньше единицы, значит такого email нет
+                if ($result_query->num_rows < 1) {
+
+                    //Если полученный результат не равен false
+                    if (($row = $result_query->fetch_assoc()) != false) {
+
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Такого пользователя, под которым создается обращение не существует!</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+
+                    } else {
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+                    }
+
+                    /* закрытие выборки */
+                    $result_query->close();
+
+                    //Останавливаем  скрипт
+                    exit();
+                }
+
+                /* закрытие выборки */
+                $result_query->close();
+
+            } else {
+                // Сохраняем в сессию сообщение об ошибке.
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите создателя обращения</p>";
+
+                //Возвращаем пользователя на страницу регистрации
+                header("HTTP/1.1 301 Moved Permanently");
+                header("Location: " . $address_site . "/form_request.php");
+
+                //Останавливаем  скрипт
+                exit();
+            }
+
+        } else {
+            // Сохраняем в сессию сообщение об ошибке.
+            $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует создатель / пользователь</p>";
+
+            //Возвращаем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: " . $address_site . "/form_request.php");
+
+            //Останавливаем  скрипт
+            exit();
+        }
+
+        /*111*/
+
+        //Проверка на существование ИСПОЛНИТЕЛЯ - пользователя
         if (isset($_POST["option3"])) {
 
             //Обрезаем пробелы с начала и с конца строки
@@ -472,23 +516,81 @@ else {
             //Останавливаем  скрипт
             exit();
         }
+
+
+        //Проверка на существование статуса
+        if (isset($_POST["fk_status_id"])) {
+
+            //Обрезаем пробелы с начала и с конца строки
+            $status = trim($_POST["fk_status_id"]);
+
+            if (!empty($status)) {
+
+                $status = htmlspecialchars($status, ENT_QUOTES);
+
+//Проверяем нет ли уже такого адреса в БД.
+                $result_query = $mysqli->query("select status_id,status_name from status where status_id='" . $status . "'");
+
+//Если кол-во полученных строк меньше единицы, значит такого статуса нет
+                if ($result_query->num_rows < 1) {
+
+                    //Если полученный результат не равен false
+                    if (($row = $result_query->fetch_assoc()) != false) {
+
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Такого статуса не существует!</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+
+                    } else {
+                        // Сохраняем в сессию сообщение об ошибке.
+                        $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
+
+                        //Возвращаем пользователя на страницу регистрации
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header("Location: " . $address_site . "/form_request.php");
+                    }
+
+                    /* закрытие выборки */
+                    $result_query->close();
+
+                    //Останавливаем  скрипт
+                    exit();
+                }
+
+                /* закрытие выборки */
+                $result_query->close();
+
+            } else {
+                // Сохраняем в сессию сообщение об ошибке.
+                $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите статус обращения</p>";
+
+                //Возвращаем пользователя на страницу регистрации
+                header("HTTP/1.1 301 Moved Permanently");
+                header("Location: " . $address_site . "/form_request.php");
+
+                //Останавливаем  скрипт
+                exit();
+            }
+
+        } else {
+            // Сохраняем в сессию сообщение об ошибке.
+            $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует выбранный статус для установки в обращение</p>";
+
+            //Возвращаем пользователя на страницу регистрации
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: " . $address_site . "/form_request.php");
+
+            //Останавливаем  скрипт
+            exit();
+        }
         //if ($mysqli->connect_errno) { die('Ошибка соединения: ' . $mysqli->connect_error); }else{echo 'Connect true';}
 
 
-        $rolename = trim($_POST["option1"]);
-        $rolename = htmlspecialchars($rolename, ENT_QUOTES);
-        $result_query_Role_id = $mysqli->query("select Role_id from Roles where Role_name='" . $rolename . "'");
-        $roleid = mysqli_fetch_assoc($result_query_Role_id);
-        $resultroleid = $roleid['Role_id'];
 
-        $organisation_name = trim($_POST["option2"]);
-        $organisation_name = htmlspecialchars($organisation_name, ENT_QUOTES);
-        $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='" . $organisation_name . "'");
-        $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
-        $resultidorganisationid = $idorganisation['id_organisation'];
-
-
-        //формирование данных для записи в бд
+//формирование данных для записи в бд
         //заголовок
         $caption = trim($_POST["caption"]);
         $caption = htmlspecialchars($caption, ENT_QUOTES);
@@ -501,6 +603,10 @@ else {
         $description = trim($_POST["description"]);
         $description = htmlspecialchars($description, ENT_QUOTES);
 
+        //создатель (поиск EMAIL такое же добавить)
+        $userCreate = trim($_POST["fk_create_user_id"]);
+        $userCreate = htmlspecialchars($userCreate, ENT_QUOTES);
+
         //исполнитель (поиск EMAIL такое же добавить)
         $userRespons = trim($_POST["option3"]);
         $userRespons = htmlspecialchars($userRespons, ENT_QUOTES);
@@ -511,29 +617,18 @@ else {
         $userRespons = preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $userRespons, $matches2);
         $userRespons = $matches2[0][0];
 
-        $EmailUserRespons = $userRespons;
+        $EmailUserResponse = $userRespons;
 
         $result_query_userRespons = $mysqli->query("select user_id,concat(last_name, \" \",first_name,\" \", \"(\",email,\")\") as userRespons from users where user_id >0 
 and fk_role_id =2 and email='" . $userRespons . "'");
         $userResponsID = mysqli_fetch_assoc($result_query_userRespons);
         $resultUserResponsID = $userResponsID['user_id'];
 
+        //дата создания
+        $dateCreate = trim($_POST["date_create"]);
+
         //статус
-        $statusname = trim($_POST["option1"]);
-        $statusname = htmlspecialchars($statusname, ENT_QUOTES);
-        $result_query_Status_id = $mysqli->query("select status_id,status_name from status where status_iD >0 and status_name='" . $statusname . "'");
-        $statusid = mysqli_fetch_assoc($result_query_Status_id);
-        $resultStatusID = $statusid['status_id'];
-
-        //оценка
-        $evaluationname = trim($_POST["option5"]);
-        $evaluationname = htmlspecialchars($evaluationname, ENT_QUOTES);
-        $result_query_Evaluation_id = $mysqli->query("select evaluation_id,evaluation_name from request_performance_evaluation where evaluation_name='" .$evaluationname. "'");
-        $evaluationid = mysqli_fetch_assoc($result_query_Evaluation_id);
-        $resultEvaluationID = $evaluationid['evaluation_id'];
-
-
-
+        $statusid = trim($_POST["fk_status_id"]);
 
         //приоритет
         $priorityname = trim($_POST["option2"]);
@@ -549,199 +644,199 @@ and fk_role_id =2 and email='" . $userRespons . "'");
         $serviceid = mysqli_fetch_assoc($result_query_Service_id);
         $resultServiceID = $serviceid['service_id'];
 
+        //Тип распределния задачи относительно исполнителей
+        $methodname = trim($_POST["option5"]);
+        $methodname = htmlspecialchars($methodname, ENT_QUOTES);
+        $result_query_method_id = $mysqli->query("select method_id,method_name from methods_set_responsible where method_id >0 and method_name='" . $methodname . "'");
+        $methodid = mysqli_fetch_assoc($result_query_method_id);
+        $resultMethodID = $methodid['method_id'];
 
-        /*Здесь нужно еще прописать установку дат при выборе статуса "в работе" (id = 2) и "решена" (id = 4)*/
-        $date_start_work = $_POST["date_start_work"];
-        $date_resolve = $_POST["date_resolve"];
 
-        /*проверка, если они пустые, то просто null обратно проставляем*/
-        if($date_start_work =='Не взята на исполнение' || $date_start_work == '0000-00-00 00:00:00')
+        //Основная логика по распределению заявок на инженеров (метод Монте-Карло + стопка книг)*********************
+        //$resultUserResponsID -> Текущий выбранный желаемый исполнитель
+        $SelectedResponsible = $resultUserResponsID;
+
+
+        //Определяем тип распределения
+        switch ($resultMethodID)
         {
-            $date_start_work = 'null';
-        }
-        if($date_resolve == 'Не решена' || $date_resolve == '0000-00-00 00:00:00')
-        {
-            $date_resolve = 'null';
-        }
-
-        /*проверка статусов. Если выбран соотв статус - ставим дату*/
-        if($resultStatusID == 2)
-        {
-            $date_start_work = date("Y-m-d H:i:s");
-            $date_resolve = 'null';
-        }
-        if($resultStatusID == 4)
-        {
-            $date_resolve = date("Y-m-d H:i:s");
-        }
-
-//Запрос на изменение обращения в БД
-
-
-
-        $result_query_insert = $mysqli->query("update requests set caption='" . $caption . "', short_description='" . $short_description . "', description='" . $description . "', fk_responsible_user_id='" . $resultUserResponsID ."' , date_start_work='".$date_start_work."', date_resolve='".$date_resolve. "', fk_status_id='" . $resultStatusID . "', fk_priority_id='" . $resultPriorityID . "', fk_service_id='" . $resultServiceID . "', evaluation_id='" .$resultEvaluationID. "'  where request_id='" . $_POST["request_id"] . "'");
-
-        /*коэффициенты для пользователя*/
-        $User_isBusyIngeneer = null;
-        $User_evaluationAverage = 0;
-        $User_isNewIgneneer = 0;
-        $User_distanceWork = null;
-        $User_workTime = null;
-
-        /*TODO: реализовать запись коэффициентов инженеров в зависимости от прогресса решения задач*/
-
-
-        /*Проверяем есть ли еще открытые задачи помимо этой. Если есть - то не ставим признак свободного инженера*/
-        $result_query_Count_open_requests = $mysqli->query("select count(Request_Id) as CountOpenRequests from requests where fk_status_ID in (2,3) and fk_responsible_user_id = '" . $resultUserResponsID . "' and Request_Id <> ".$_POST["request_id"]);
-        $CountOpenRequests = mysqli_fetch_assoc($result_query_Count_open_requests);
-        $resultCountOpenRequests = $CountOpenRequests['CountOpenRequests'];
-
-        /*Если помимо этой задаче нет еще открытых задач, проверяем статус и ставим признак свободности / занятости инженера*/
-        if($resultCountOpenRequests < 1) {
-            switch ($resultStatusID) {
-                case 0:
-                    $User_isBusyIngeneer = null; //незизвестно
-                case 1:
-                    $User_isBusyIngeneer = null; //ожидает исполнения
-                case 2:
-                    $User_isBusyIngeneer = 1; //в работе
-                case 3:
-                    $User_isBusyIngeneer = 1; //Требует уточнения
-                case 4:
-                    $User_isBusyIngeneer = null; //Решена
-                case 5:
-                    $User_isBusyIngeneer = null; //закрыта
-            }
-        }
-        else
-        {
-            $User_isBusyIngeneer = 1;
-        }
-
-        /*Рассчитываем новый коэффициент качества исполнения задач*/
-        $result_query_QualityWork = $mysqli->query("select sum(request_performance_evaluation.evaluation_score)/count(Request_Id) as NewQualityWork from requests 
-inner join request_performance_evaluation on requests.evaluation_id = request_performance_evaluation.evaluation_id
-where fk_status_ID in (4,5) and fk_responsible_user_id = ".$resultUserResponsID);
-        $CoefQualityWork = mysqli_fetch_assoc($result_query_QualityWork);
-        $User_evaluationAverage = $CoefQualityWork['NewQualityWork'];
-
-        /*Рассчитываем время исполнения последней / текущей заявки*/
-        if($resultStatusID == 4)
-        {
-            $result_query_TimeWork = $mysqli->query("select TIMEDIFF(date_resolve,date_start_work) as TimeWork from requests 
-where fk_status_ID in (4,5) and fk_responsible_user_id = ".$resultUserResponsID. " and request_id =".$_POST["request_id"]);
-            $TimeWork = mysqli_fetch_assoc($result_query_TimeWork);
-            $User_workTime = $TimeWork['TimeWork'];
-
-           // $User_workTime = $date_resolve->diff( $date_start_work )->format("%h:%i:%s");
-
-
-
-           // $User_workTime = $User_workTime -> format("H:i:s");
-        }
-
-        /*Рассчитываем расстояние до места исполнения заявки*/
-        //TODO: Если статус в "ожидает исполнения" или "в работе" ставим километраж. Если другой статус - ставим Null.
-
-        /*Если пользователи от одной организации то рассчитываем дистанцию. Т.к можем. Иначе - нет*/
-        /*TODO: сделать проверку что юзер и инженер от одной организации*/
-
-        //Ищем ID пользователя, создавшего заявку
-        $result_query_user_create = $mysqli->query("select fk_create_user_id from requests
-where request_id = ".$_POST["request_id"]);
-        $UserCr = mysqli_fetch_assoc($result_query_user_create);
-        $UserCreateID = $UserCr['fk_create_user_id'];
-
-
-
-
-        /*ищем расстояние от головного офиса для пользователя создавшего заявку (П1)*/
-        $result_query_user_org = $mysqli->query("select fk_organisation_id from users
-where user_id = ".$UserCreateID);
-        $UserOrg = mysqli_fetch_assoc($result_query_user_org);
-        $User_Organisation = $UserOrg['fk_organisation_id'];
-
-        /*ищем расстояние от головного офиса для инженера, взявшего в работу заявку (И1)*/
-        $result_query_ingener_org = $mysqli->query("select fk_organisation_id from users
-where user_id = ".$resultUserResponsID);
-        $IngenerOrg = mysqli_fetch_assoc($result_query_ingener_org);
-        $Ingener_Organisation = $IngenerOrg['fk_organisation_id'];
-
-        if($User_Organisation == $Ingener_Organisation)
-        {
-            if ($resultStatusID == 2 || $resultStatusID == 3)
-            {
-                /*ищем расстояние от головного офиса для пользователя создавшего заявку (П1)*/
-                $result_query_user_distance = $mysqli->query("select mo_distance from users
-inner join office on users.fk_office_id = office.office_id
-where Users.User_id = " . $UserCreateID);
-                $CoefUserDistance = mysqli_fetch_assoc($result_query_user_distance);
-                $User_DistanceResult = $CoefUserDistance['mo_distance'];
-
-                /*ищем расстояние от головного офиса для инженера, взявшего в работу заявку (И1)*/
-                $result_query_ingener_distance = $mysqli->query("select mo_distance from users
-inner join office on users.fk_office_id = office.office_id
-where Users.User_id =" . $resultUserResponsID);
-                $CoefIngenerDistance = mysqli_fetch_assoc($result_query_ingener_distance);
-                $Ingener_DistanceResult = $CoefIngenerDistance['mo_distance'];
-
-                /*TODO: рассчитываем расстояние: abs(Расстояние П1 -  Расстояние И1)*/
-                $User_distanceWork = abs($User_DistanceResult - $Ingener_DistanceResult);
-            }
-            else
+            case 1:
                 {
-                $k4_distance_work = null;
-            }
+                    //мой метод с коэффициентами
+                    $queryResponsible = $mysqli->query("
+       select t.user_id as MostOptimalResponsible, t.koef as Koefitient from (
+select user_id,count(request_id) as CountResolvedRequests,SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id)) as AverageExecutionTime,sum(request_performance_evaluation.evaluation_score)/count(request_id) as AverageEvaluattion,
+(count(request_id)*sum(request_performance_evaluation.evaluation_score)/count(request_id))/TIME_TO_SEC(SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id))) as koef
+from users
+inner join requests on requests.fk_responsible_user_id = users.user_id
+inner join request_performance_evaluation on request_performance_evaluation.evaluation_id = requests.evaluation_id
+inner join service on service.service_id = requests.fk_service_id
+and requests.fk_service_id =".$resultServiceID."
+and requests.fk_status_id = 5
+group by user_id
+order by koef desc) t
+ LIMIT 0,1");
+
+                    if($queryResponsible != null)
+                    {
+                        $CalculatedOptimalResponsible = mysqli_fetch_assoc($queryResponsible);
+                        $OptimalResponsibleID = $CalculatedOptimalResponsible['MostOptimalResponsible'];
+
+                        if($OptimalResponsibleID != null){
+                            $resultUserResponsID = $OptimalResponsibleID;
+                        }
+                    }
+                }break;
+            case 2:
+                {
+//Метод монте-карло
+                    $queryResponsible = $mysqli->query("
+       select user_id,SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id)) as AverageExecutionTime
+from users
+inner join requests on requests.fk_responsible_user_id = users.user_id
+and requests.fk_status_id = 5
+group by user_id
+order by AverageExecutionTime asc
+");
+
+
+                    if($queryResponsible != null)
+                    {
+                        $result_query_num_Responsible = mysqli_num_rows($queryResponsible);
+
+                        $result = array();
+                        //Берем только первую половину записей (выше среднего)
+                        for ($i=0; $i <($result_query_num_Responsible/2)-1; $i++)
+                        {
+                            $row = mysqli_fetch_array($queryResponsible);
+                            $result[] = $row["user_id"];
+                        }
+
+                        //Берем рандомного инженера
+                        $rand_userResp = array_rand($result,1);
+
+                        //заносим данного рандомного инженера в UserResp
+                        $OptimalResponsibleID = $result[$rand_userResp];
+
+
+
+
+
+                        if($OptimalResponsibleID != null){
+                            $resultUserResponsID = $OptimalResponsibleID;
+                        }
+                    }
+                }break;
+            case 3:
+                {
+                    $resultUserResponsID = $SelectedResponsible;
+                }
+            default:
+                {
+
+                }break;
         }
 
 
-        /*Здесь обновление коэфициентов на новые*/
-        $result_query_insert_user = $mysqli->query("update users set 	k1_busy_employee='" . $User_isBusyIngeneer . "', k2_quality_work='" . $User_evaluationAverage . "', k3_new_employee='" . $User_isNewIgneneer . "', k4_distance_work='" . $User_distanceWork ."' , k5_execution_time='".$User_workTime."'  where user_id='" . $resultUserResponsID . "'");
+        /*
+        //мой метод с коэффициентами
+        $queryResponsible = $mysqli->query("
+        select t.user_id as MostOptimalResponsible, t.koef as Koefitient from (
+ select user_id,count(request_id) as CountResolvedRequests,SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id)) as AverageExecutionTime,sum(request_performance_evaluation.evaluation_score)/count(request_id) as AverageEvaluattion,
+ (count(request_id)*sum(request_performance_evaluation.evaluation_score)/count(request_id))/TIME_TO_SEC(SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id))) as koef
+ from users
+ inner join requests on requests.fk_responsible_user_id = users.user_id
+ inner join request_performance_evaluation on request_performance_evaluation.evaluation_id = requests.evaluation_id
+ inner join service on service.service_id = requests.fk_service_id
+ and requests.fk_service_id =".$resultServiceID."
+ and requests.fk_status_id = 5
+ group by user_id
+ order by koef desc) t
+  LIMIT 0,1");
+
+         if($queryResponsible != null)
+         {
+             $CalculatedOptimalResponsible = mysqli_fetch_assoc($queryResponsible);
+             $OptimalResponsibleID = $CalculatedOptimalResponsible['MostOptimalResponsible'];
+
+             if($OptimalResponsibleID != null){
+                 $resultUserResponsID = $OptimalResponsibleID;
+             }
+         }
+
+        */
 
 
+        //Метод монте-карло
+        /* $queryResponsible = $mysqli->query("
+        select user_id,SEC_TO_TIME(sum(TIME_TO_SEC(Timediff(date_resolve,date_start_work)))/Count(request_id)) as AverageExecutionTime
+ from users
+ inner join requests on requests.fk_responsible_user_id = users.user_id
+ and requests.fk_status_id = 5
+ group by user_id
+ order by AverageExecutionTime asc
+ ");
+
+
+         if($queryResponsible != null)
+         {
+             $result_query_num_Responsible = mysqli_num_rows($queryResponsible);
+
+             $result = array();
+             //Берем только первую половину записей (выше среднего)
+             for ($i=0; $i <($result_query_num_Responsible/2)-1; $i++)
+             {
+                 $row = mysqli_fetch_array($queryResponsible);
+                 $result[] = $row["user_id"];
+             }
+
+             //Берем рандомного инженера
+             $rand_userResp = array_rand($result,1);
+
+             //заносим данного рандомного инженера в UserResp
+             $OptimalResponsibleID = $result[$rand_userResp];
+
+
+
+
+
+             if($OptimalResponsibleID != null){
+                 $resultUserResponsID = $OptimalResponsibleID;
+             }
+         }*/
+
+
+
+
+
+
+
+        //Конец логики распределения заявок*********************************
+
+
+
+
+//Запрос на создание обращения в БД
+        $result_query_insert = $mysqli->query("insert into requests (request_id,caption,short_description, description,
+fk_create_user_id, fk_responsible_user_id, date_create, fk_status_id, fk_priority_id, fk_service_id) values(null,'" . $caption . "', '" . $short_description . "', '" . $description ."' , '".$userCreate . "', '" . $resultUserResponsID ."','".$dateCreate. "', '" . $statusid . "', '" . $resultPriorityID . "', '" . $resultServiceID . "' )");
+        $CurrentInsertRequestID=mysqli_insert_id($mysqli);
         if (!$result_query_insert) {
             // Сохраняем в сессию сообщение об ошибке.
-            $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на изменение обращения в БД</p>";
+            $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на создание обращения в БД</p>";
 
-            //Возвращаем пользователя на страницу обращений
+            //Возвращаем пользователя на страницу регистрации
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: " . $address_site . "/form_request.php");
+            header("Location: " . $address_site . "/form_register.php");
 
             //Останавливаем  скрипт
             exit();
         } else {
 
-            /*Сделать отправку письма о назначении заявки*/
-            //$EmailUserResponse
-            /*Отправка пьсма начало*/
-
-
-            if(!empty($_POST["current_comment"]))
-            {
-                $Comment = "Добавлен комментарий: ".$_POST["current_comment"];
-            }
-            else $Comment="";
-
-            $to = $EmailUserRespons;
-            $subject = "Автоматическая отправка уведомлений об изменении заявок";
-            $message = "Была изменена заявка с номером: ".$_POST["request_id"]."\nЗаголовком: ".$caption."\nКратким описанием: ".$short_description.
-            "\nТекущий статус заявки: ".$statusname."\nТекущий приоритет заявки: ".$priorityname."\n".$Comment;
-            $headers = "*************";
-            mail ($to, $subject, $message, $headers);
-
-            /*Отправка письма конец*/
-
-            $_SESSION["success_messages"] = "<p class='success_message'>Данные изменены успешно <br /><br />Обращение №".$_POST["request_id"]." изменено</p>";
-
             /*//Отправляем пользователя на страницу авторизации
             header("HTTP/1.1 301 Moved Permanently");
             header("Location: ".$address_site."/form_auth.php");*/
 
-            //Отправляем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: " . $address_site . "/form_edit_request.php?request=".$_POST["request_id"]);
         }
-
 
         /*Логика по добавлению файлов*/
 
@@ -761,6 +856,7 @@ where Users.User_id =" . $resultUserResponsID);
 // Директория куда будут загружаться файлы.
         $path = __DIR__ . '/uploads/';
 
+        echo "<br>inp_name=".$_FILES[$input_name];
         if (isset($_FILES[$input_name])) {
             // Проверим директорию для загрузки.
             if (!is_dir($path)) {
@@ -775,12 +871,15 @@ where Users.User_id =" . $resultUserResponsID);
             } else {
                 foreach($_FILES[$input_name] as $k => $l) {
                     foreach($l as $i => $v) {
+
                         $files[$i][$k] = $v;
                     }
                 }
             }
 
             foreach ($files as $file) {
+                echo "<br>FILETEMP=".$file['tmp_name'];
+                echo "<br>FILE=".$file['name'];
                 $error = $success = '';
 
                 // Проверим на ошибки загрузки.
@@ -804,9 +903,14 @@ where Users.User_id =" . $resultUserResponsID);
                 } else {
                     // Оставляем в имени файла только буквы, цифры и некоторые символы.
                     $pattern = "[^a-zа-яё0-9,~!@#%^-_\$\?\(\)\{\}\[\]\.]";
+
+                    echo "<br>Parts1=".$file['name'];
+
                     $name = str_replace($pattern, '-', $file['name']);
+
+                    echo "<br>Parts2=".$name;
+
                     $name = str_replace('[-]+', '-', $name);
-                    $name = str_replace(' ', '_', $name);
 
                     // Т.к. есть проблема с кириллицей в названиях файлов (файлы становятся недоступны).
                     // Сделаем их транслит:
@@ -826,8 +930,10 @@ where Users.User_id =" . $resultUserResponsID);
                         'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
                     );
 
+                    echo "<br>Parts=".$name;
                     $name = strtr($name, $converter);
                     $parts = pathinfo($name);
+                    echo "<br>Parts=".$name;
 
                     if (empty($name) || empty($parts['extension'])) {
                         $error = 'Недопустимое тип файла';
@@ -856,8 +962,10 @@ where Users.User_id =" . $resultUserResponsID);
 
                 // Выводим сообщение о результате загрузки.
                 if (!empty($success)) {
-                    $result_query_insert = $mysqli->query("insert into Attachments (attachment_id,attachment_url,attachment_name, fk_request_id)
-values(null,'"."uploads/"."', '".$name . "', '" . $_POST["request_id"]."' )");
+                    $result_query_insert = $mysqli->query("insert into Attachments (attachment_id,attachment_url, fk_request_id)
+values(null,'".$path.$file["file"]["name"] . "', '" . $CurrentInsertRequestID."' )");
+                    echo '<br>' . "insert into Attachments (attachment_id,attachment_url, fk_request_id)
+values(null,'".$path.$file["file"]["name"] . "', '" . $CurrentInsertRequestID."' )" . '</br>';
                 } else {
                     echo '<p>' . $error . '</p>';
                 }
@@ -866,21 +974,9 @@ values(null,'"."uploads/"."', '".$name . "', '" . $_POST["request_id"]."' )");
 
         /*Логика по добавлению факлов конец*/
 
-        /*Логика добавления комментов начало*/
-
-        if(!empty($_POST["current_comment"]))
-        {
-            $result_query_insert = $mysqli->query("insert into comments (comment_id,comment_text,comment_date, rf_user_id, rf_request_id)
-values(null,'".$_POST["current_comment"]."', '".date("Y-m-d H:i:s")."', '".$_SESSION['user_id']."', '" . $_POST["request_id"]."' )");
-        }
-
-        /*Логика добавления комментов конец*/
-
-
-
-
         /* Завершение запроса */
         $result_query_insert->close();
+
 
 //Закрываем подключение к БД
         $mysqli->close();

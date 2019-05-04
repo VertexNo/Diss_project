@@ -10,6 +10,7 @@ require_once("header.php");
 ini_set('session.bug_compat_warn', 0);
 ?>
 <link rel="stylesheet" type="text/css" href="css/filter_request_style.css">
+<meta http-equiv="Refresh" content="30" />
 <div class="block_for_messages">
     <?php
     //Если в сессии существуют сообщения об ошибках, то выводим их
@@ -33,6 +34,14 @@ ini_set('session.bug_compat_warn', 0);
 //Проверяем, если пользователь не авторизован, то выводим форму регистрации,
 //иначе выводим сообщение о том, что он уже зарегистрирован
 if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk_Role_id'])==1*/){ //убрал "НЕ"
+    if(isset($_GET['sort']) && isset($_GET['type']))
+    {
+        $_SESSION['order_request_column_name'] = $_GET['sort'];
+        $_SESSION['order_request_type'] = $_GET['type'];
+    }
+    if (isset($_GET['page'])) {
+        $_SESSION['current_page'] = $_GET['page'];
+    }
     ?>
 
     <br><br>
@@ -49,6 +58,7 @@ userCreate.user_id as userCreateID,
 concat(userRespons.last_name, \" \",userRespons.first_name,\" \", \"(\",userRespons.email,\")\") as userRespons,
 userRespons.user_id as userResponsID,
 org.organisation_name as organisation_name,
+org.id_organisation as id_organisation,
 status.status_name as status_name,
 status.status_id as status_id,
 priority.priority_name as priority_name,
@@ -336,7 +346,7 @@ and fk_role_id =2 and email='" . $userRespons . "'");
 
     //Префильтр для OrderBy
     $orderBy = '';
-    $orderBy = ' order by status_id desc';
+    $orderBy = ' order by '.$_SESSION['order_request_column_name'].' '.$_SESSION['order_request_type'];
 
 
     //Проставляем условия префильтра
@@ -602,17 +612,51 @@ and fk_role_id =2 and email='" . $userRespons . "'");
     <table>
         <thead><!-- необязательный тег-->
         <tr>
-            <th>№ обращения</th>
-            <th>Заголовок</th>
-            <th>Краткое описание</th>
-            <th>Дата создания</th>
-            <th>Дата решения</th>
-            <th>Обратился</th>
-            <th>Исполнитель</th>
-            <th>Обратившаяся организация</th>
-            <th>Статус</th>
-            <th>Приоритет</th>
-            <th>Тип услуги</th>
+            <th class="request_id" id="request_id">№<br>
+                <a href='./form_request.php?sort=request_id&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=request_id&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="caption" id="caption">Заголовок<br>
+                <a href='./form_request.php?sort=caption&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=caption&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="short_description" id="short_description">Краткое описание<br>
+                <a href='./form_request.php?sort=short_description&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=short_description&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="date_resolve" id="date_resolve">Дата создания<br>
+                <a href='./form_request.php?sort=date_create&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=date_create&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="date_create" id="date_create">Дата решения<br>
+                <a href='./form_request.php?sort=date_resolve&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=date_resolve&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="userCreate" id="userCreate">Обратился<br>
+                <a href='./form_request.php?sort=fk_create_user_id&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=fk_create_user_id&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="userRespons" id="userRespons">Исполнитель<br>
+                <a href='./form_request.php?sort=fk_responsible_user_id&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=fk_responsible_user_id&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            </th>
+            <th class="organisation_name" id="organisation_name">Обратившаяся организация<br>
+                <a href='./form_request.php?sort=id_organisation&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=id_organisation&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="status_name" id="status_name">Статус<br>
+                <a href='./form_request.php?sort=fk_status_id&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=fk_status_id&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="priority_name" id="priority_name">Приоритет<br>
+                <a href='./form_request.php?sort=fk_priority_id&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=fk_priority_id&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
+            <th class="service_name" id="service_name">Тип услуги<br>
+                <a href='./form_request.php?sort=service_id&type=asc'><img src="./background/sort_asc.png"></a>
+                &nbsp; <a href='./form_request.php?sort=service_id&type=desc'><img src="./background/sort_desc.png"></a>
+            </th>
         </tr>
         </thead>
         <tbody><!--необязательный тег-->
@@ -681,7 +725,7 @@ where request_id > 0";
     // здесь наоборот уменьшаем чтобы ничего не нарушить.
     $list=$page*$quantity;
 
-    $orderby_pagination = $_SESSION['order_requests'].' LIMIT '.$quantity.' OFFSET '. $list;
+    $orderby_pagination = $orderBy.' LIMIT '.$quantity.' OFFSET '. $list;
 
     $query .= $orderby_pagination;
 
@@ -697,48 +741,48 @@ where request_id > 0";
         //echo 'RequestId = '.$result['request_id'];
     ?>
     <tr onclick="window.location='./form_edit_request.php?request=<?php echo $result['request_id'] ?>'"> <!--Передаем ID обращения-->
-        <td>
+        <td class="request_id">
             <?php echo $result['request_id']?>
         </td>
 
-        <td>
+        <td class="caption">
             <?php echo $result['caption']?>
         </td>
 
-        <td>
+        <td class="short_description">
             <?php echo $result['short_description']?>
         </td>
 
-        <td>
+        <td class="date_create">
             <?php echo $result['date_create']?>
         </td>
 
-        <td>
+        <td class="date_resolve">
             <?php echo $result['date_resolve']?>
         </td>
 
-        <td>
+        <td class="userCreate">
            <?php echo $result['userCreate']?>
         </td>
 
-        <td>
+        <td class="userRespons">
             <?php echo $result['userRespons']?>
         </td>
 
 
-        <td>
+        <td class="organisation_name">
            <?php echo $result['organisation_name']?>
         </td>
 
-        <td>
+        <td class="status_name">
             <?php echo $result['status_name']?>
-        </td>
+        </td class="request_id">
 
-        <td>
+        <td class="priority_name">
             <?php echo $result['priority_name']?>
         </td>
 
-        <td>
+        <td class="service_name">
             <?php echo $result['service_name']?>
         </td>
 
@@ -784,12 +828,12 @@ where request_id > 0";
 
         // Значение page= для первой страницы всегда равно единице,
         // поэтому так и пишем
-        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=1"><<</a> &nbsp; ';
+        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=1&sort='.$_SESSION['order_request_column_name'].'&type='.$_SESSION['order_request_type'].'"><<</a> &nbsp; ';
 
         // Так как мы количество страниц до этого уменьшили на единицу,
         // то для того, чтобы попасть на предыдущую страницу,
         // нам не нужно ничего вычислять
-        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=' . $page .
+        echo '<a href="' . $_SERVER['SCRIPT_NAME'] . '?page=' . $page .'&sort='.$_SESSION['order_request_column_name'].'&type='.$_SESSION['order_request_type'].
             '">< </a> &nbsp; ';
     }
 

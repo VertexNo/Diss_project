@@ -202,7 +202,7 @@ session_start();
         }else{
             //Если пользователь авторизован, то выводим ссылку Выход
             ?>
-                <li> <a href="./form_request.php">Обращения</a></li>
+                <li> <a href="./form_request.php?page=<?php echo $_SESSION['current_page'].'&sort='.$_SESSION['order_request_column_name'].'&type='.$_SESSION['order_request_type'] ?>">Обращения</a></li>
                 <li> <a href="./form_create_request.php">Создать обращение</a></li>
                 <div id="auth_block">
             <?php
