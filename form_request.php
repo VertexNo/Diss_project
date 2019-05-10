@@ -624,11 +624,11 @@ and fk_role_id =2 and email='" . $userRespons . "'");
                 <a href='./form_request.php?sort=short_description&type=asc'><img src="./background/sort_asc.png"></a>
                 &nbsp; <a href='./form_request.php?sort=short_description&type=desc'><img src="./background/sort_desc.png"></a>
             </th>
-            <th class="date_resolve" id="date_resolve">Дата создания<br>
+            <th class="date_create" id="date_create">Дата создания<br>
                 <a href='./form_request.php?sort=date_create&type=asc'><img src="./background/sort_asc.png"></a>
                 &nbsp; <a href='./form_request.php?sort=date_create&type=desc'><img src="./background/sort_desc.png"></a>
             </th>
-            <th class="date_create" id="date_create">Дата решения<br>
+            <th class="date_resolve" id="date_resolve">Дата решения<br>
                 <a href='./form_request.php?sort=date_resolve&type=asc'><img src="./background/sort_asc.png"></a>
                 &nbsp; <a href='./form_request.php?sort=date_resolve&type=desc'><img src="./background/sort_desc.png"></a>
             </th>
@@ -690,7 +690,7 @@ inner join organisations org on org.id_organisation = userCreate.fk_organisation
 inner join status status on req.fk_status_id = status.status_id
 inner join priority priority on priority.priority_id = req.fk_priority_id
 inner join service service on req.fk_service_id = service.service_id
-where request_id > 0";
+where request_id > 0 ".$prefilter;
     $q.=$_SESSION['filter_requests'];
     $q.=$_SESSION['order_requests'];
 
@@ -730,6 +730,7 @@ where request_id > 0";
     $query .= $orderby_pagination;
 
 
+
     $result_query_requests = $mysqli->query($query);
 
 
@@ -754,11 +755,20 @@ where request_id > 0";
         </td>
 
         <td class="date_create">
-            <?php echo $result['date_create']?>
+            <?php echo date("d.m.Y H:i", strtotime($result['date_create']))?>
         </td>
 
         <td class="date_resolve">
-            <?php echo $result['date_resolve']?>
+            <?php
+            if($result['date_resolve'] == 'Не решена' || $result['date_resolve'] == '0000-00-00 00:00:00')
+            {
+                echo $result['date_resolve'];
+            }
+            else
+                {
+                echo date("d.m.Y H:i", strtotime($result['date_resolve']));
+                }
+            ?>
         </td>
 
         <td class="userCreate">

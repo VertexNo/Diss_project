@@ -28,19 +28,17 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
     $captcha = trim($_POST["captcha"]);
 
     if(isset($_POST["captcha"]) && !empty($captcha)){
-
+echo '<br>asda1';
         //Сравниваем полученное значение с значением из сессии.
         if(($_SESSION["rand"] != $captcha) && ($_SESSION["rand"] != "")){
-
+            echo '<br>asda2';
             // Если капча не верна, то возвращаем пользователя на страницу регистрации, и там выведем ему сообщение об ошибке что он ввёл неправильную капчу.
             $error_message = "<p class='mesage_error'><strong>Ошибка!</strong> Вы ввели неправильную капчу </p>";
 
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] = $error_message;
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
+
 
             //Останавливаем скрипт
             exit();
@@ -49,7 +47,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
         /* Проверяем если в глобальном массиве $_POST существуют данные отправленные из формы и заключаем переданные данные в обычные переменные.*/
 
         if(isset($_POST["first_name"])){
-
+            echo '<br>asda2';
             //Обрезаем пробелы с начала и с конца строки
             $first_name = trim($_POST["first_name"]);
 
@@ -61,9 +59,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 // Сохраняем в сессию сообщение об ошибке.
                 $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Ваше имя</p>";
 
-                //Возвращаем пользователя на страницу регистрации
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$address_site."/form_register.php");
+
 
                 //Останавливаем скрипт
                 exit();
@@ -74,9 +70,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле с именем</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
+
 
             //Останавливаем скрипт
             exit();
@@ -84,7 +78,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
 
         if(isset($_POST["last_name"])){
-
+            echo '<br>asda3';
             //Обрезаем пробелы с начала и с конца строки
             $last_name = trim($_POST["last_name"]);
 
@@ -96,9 +90,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 // Сохраняем в сессию сообщение об ошибке.
                 $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Вашу фамилию</p>";
 
-                //Возвращаем пользователя на страницу регистрации
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$address_site."/form_register.php");
 
                 //Останавливаем  скрипт
                 exit();
@@ -110,9 +101,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле с фамилией</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
 
             //Останавливаем  скрипт
             exit();
@@ -120,12 +108,12 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
 
         if(isset($_POST["email"])){
-
+            echo '<br>asda4';
             //Обрезаем пробелы с начала и с конца строки
             $email = trim($_POST["email"]);
 
             if(!empty($email)){
-
+                echo '<br>asda5';
                 $email = htmlspecialchars($email, ENT_QUOTES);
 
                 //Проверяем формат полученного почтового адреса с помощью регулярного выражения
@@ -133,12 +121,11 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
 //Если формат полученного почтового адреса не соответствует регулярному выражению
                 if( !preg_match($reg_email, $email)){
+
+                    echo '<br>asda6';
                     // Сохраняем в сессию сообщение об ошибке.
                     $_SESSION["error_messages"] .= "<p class='mesage_error' >Вы ввели неправильный email</p>";
 
-                    //Возвращаем пользователя на страницу регистрации
-                    header("HTTP/1.1 301 Moved Permanently");
-                    header("Location: ".$address_site."/form_register.php");
 
                     //Останавливаем  скрипт
                     exit();
@@ -148,25 +135,19 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 $result_query = $mysqli->query("SELECT `email` FROM `users` WHERE `email`='".$email."'");
 
 //Если кол-во полученных строк ровно единице, значит пользователь с таким почтовым адресом уже зарегистрирован
-                if($result_query->num_rows == 1){
-
+                if($result_query->num_rows >= 1){
+                    echo '<br>asda7';
                     //Если полученный результат не равен false
                     if(($row = $result_query->fetch_assoc()) != false){
 
                         // Сохраняем в сессию сообщение об ошибке.
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Пользователь с таким почтовым адресом уже зарегистрирован</p>";
 
-                        //Возвращаем пользователя на страницу регистрации
-                        header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."/form_register.php");
 
                     }else{
                         // Сохраняем в сессию сообщение об ошибке.
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
 
-                        //Возвращаем пользователя на страницу регистрации
-                        header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."/form_register.php");
                     }
 
                     /* закрытие выборки */
@@ -183,9 +164,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 // Сохраняем в сессию сообщение об ошибке.
                 $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Ваш email</p>";
 
-                //Возвращаем пользователя на страницу регистрации
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$address_site."/form_register.php");
 
                 //Останавливаем  скрипт
                 exit();
@@ -195,9 +173,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода Email</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
 
             //Останавливаем  скрипт
             exit();
@@ -205,6 +180,8 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
 
         if(isset($_POST["password"]) && strlen($_POST["password"])>=6){
+
+            echo '<br>asda7';
 //echo $_POST["password"].length;
             //Обрезаем пробелы с начала и с конца строки
             $password = trim($_POST["password"]);
@@ -218,9 +195,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 // Сохраняем в сессию сообщение об ошибке.
                 $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите Ваш пароль. Пароль не может быть меньше 6 символов</p>";
 
-                //Возвращаем пользователя на страницу регистрации
-                header("HTTP/1.1 301 Moved Permanently");
-               header("Location: ".$address_site."/form_register.php");
 
                 //Останавливаем  скрипт
                 exit();
@@ -230,9 +204,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода пароля</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
+
 
             //Останавливаем  скрипт
             exit();
@@ -241,7 +213,7 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
         //Проверка на существование роли
         if(isset($_POST["option1"])){
-
+            echo '<br>asda8';
             //Обрезаем пробелы с начала и с конца строки
             $role = trim($_POST["option1"]);
 
@@ -257,21 +229,16 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
                     //Если полученный результат не равен false
                     if(($row = $result_query->fetch_assoc()) != false){
-
+                        echo '<br>asda8';
                         // Сохраняем в сессию сообщение об ошибке.
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Такой роли не существует!</p>";
 
-                        //Возвращаем пользователя на страницу регистрации
-                        header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."/form_register.php");
+
 
                     }else{
                         // Сохраняем в сессию сообщение об ошибке.
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
 
-                        //Возвращаем пользователя на страницу регистрации
-                        header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."/form_register.php");
                     }
 
                     /* закрытие выборки */
@@ -288,9 +255,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 // Сохраняем в сессию сообщение об ошибке.
                 $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите роль пользователя</p>";
 
-                //Возвращаем пользователя на страницу регистрации
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$address_site."/form_register.php");
 
                 //Останавливаем  скрипт
                 exit();
@@ -300,9 +264,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода роли</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
 
             //Останавливаем  скрипт
             exit();
@@ -310,36 +271,32 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
         //Проверка на существование организации
         if(isset($_POST["option2"])){
-
+            echo '<br>asda9';
             //Обрезаем пробелы с начала и с конца строки
             $organisation = trim($_POST["option2"]);
-            $organisation = addslashes($organisation);
 
             if(!empty($organisation)){
-
+                echo '<br>asda10';
+                echo '<br>$organisation'.$organisation;
+                echo '<br>$organisation'.$organisation;
+                $organisation= addslashes($organisation);
 //Проверяем нет ли уже такого адреса в БД.
                 $result_query = $mysqli->query("select id_organisation from organisations where organisation_name='".$organisation."'");
-
 //Если кол-во полученных строк меньше единицы, значит такой организации нет
                 if($result_query->num_rows < 1){
-
+                    echo '<br>asda11111';
+                    echo "select id_organisation from organisations where organisation_name='".mysqli_real_escape_string($mysqli,$organisation)."'";
                     //Если полученный результат не равен false
                     if(($row = $result_query->fetch_assoc()) != false){
-
+                        echo '<br>asda12';
                         // Сохраняем в сессию сообщение об ошибке.
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Такой организации не существует!</p>";
 
-                        //Возвращаем пользователя на страницу регистрации
-                        header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."/form_register.php");
 
                     }else{
                         // Сохраняем в сессию сообщение об ошибке.
                         $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка в запросе к БД</p>";
 
-                        //Возвращаем пользователя на страницу регистрации
-                        header("HTTP/1.1 301 Moved Permanently");
-                        header("Location: ".$address_site."/form_register.php");
                     }
 
                     /* закрытие выборки */
@@ -348,7 +305,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                     //Останавливаем  скрипт
                     exit();
                 }
-
                 /* закрытие выборки */
                 $result_query->close();
 
@@ -356,9 +312,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
                 // Сохраняем в сессию сообщение об ошибке.
                 $_SESSION["error_messages"] .= "<p class='mesage_error'>Укажите организацию пользователя</p>";
 
-                //Возвращаем пользователя на страницу регистрации
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$address_site."/form_register.php");
 
                 //Останавливаем  скрипт
                 exit();
@@ -368,9 +321,6 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] .= "<p class='mesage_error'>Отсутствует поле для ввода Организации</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
 
             //Останавливаем  скрипт
             exit();
@@ -386,19 +336,19 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
         $resultroleid = $roleid['Role_id'];
 
         $organisation_name = trim($_POST["option2"]);
-        $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='".addslashes($organisation_name)."'");
+        $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='".$organisation_name."'");
         $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
         $resultidorganisationid = $idorganisation['id_organisation'];
 //Запрос на добавления пользователя в БД
+
+        echo 'ada='."INSERT INTO `users` (first_name, last_name, email, password, fk_Role_id,fk_organisation_id, k3_new_employee, email_status) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."'," .$resultroleid.",".$resultidorganisationid.", 1, 1)";
+
          $result_query_insert = $mysqli->query("INSERT INTO `users` (first_name, last_name, email, password, fk_Role_id,fk_organisation_id, k3_new_employee, email_status) VALUES ('".$first_name."', '".$last_name."', '".$email."', '".$password."'," .$resultroleid.",".$resultidorganisationid.", 1, 1)");
 
         if(!$result_query_insert){
             // Сохраняем в сессию сообщение об ошибке.
             $_SESSION["error_messages"] .= "<p class='mesage_error' >Ошибка запроса на добавления пользователя в БД</p>";
 
-            //Возвращаем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
 
             //Останавливаем  скрипт
             exit();
@@ -406,13 +356,8 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
             $_SESSION["success_messages"] = "<p class='success_message'>Регистрация пользователя прошла успешно <br />Пользователь зарегистрирован</p>";
 
-            /*//Отправляем пользователя на страницу авторизации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_auth.php");*/
 
-            //Отправляем пользователя на страницу регистрации
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$address_site."/form_register.php");
+
         }
 
         /* Завершение запроса */
@@ -420,6 +365,8 @@ if(isset($_POST["btn_submit_register"]) && !empty($_POST["btn_submit_register"])
 
 //Закрываем подключение к БД
         $mysqli->close();
+
+        echo $_SESSION["error_messages"];
 
     }else{
         //Если капча не передана либо оно является пустой

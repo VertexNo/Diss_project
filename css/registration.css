@@ -1,6 +1,4 @@
 body{
-    font-family:'Open Sans', Arial, sans-serif;
-    font-size: 1em;
 }
 
 h2{
@@ -78,15 +76,27 @@ p{
     box-shadow: inset 0 0 3px #65686E;
     border-bottom: 1px solid #FFF;
 }
-input, select{
+input{
     width: 260px;
+    background: transparent;
+    border: 0;
+    line-height: 3.6em;
+    box-sizing: border-box;
+    color: #000000;
+    font-family:'Open Sans', Arial, sans-serif;
+    text-shadow: 0 1px 0 #FFF;
+}
+select{
+    padding: 15px 40px 20px 40px;
+    height: 70px;
+    width: 300px;
     background: transparent;
     border: 0;
     line-height: 3.6em;
     box-sizing: border-box;
     color: #71747A;
     font-family:'Open Sans', Arial, sans-serif;
-    text-shadow: 0 1px 0 #FFF;
+    text-shadow: 0 1px 0 #E5E7E9;
 }
 input:focus{
     outline: none;

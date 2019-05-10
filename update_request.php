@@ -482,7 +482,7 @@ else {
         $resultroleid = $roleid['Role_id'];
 
         $organisation_name = trim($_POST["option2"]);
-        $organisation_name = htmlspecialchars($organisation_name, ENT_QUOTES);
+        $organisation_name = addslashes($organisation_name);
         $result_query_organisation_id = $mysqli->query("select id_organisation from organisations where organisation_name='" . $organisation_name . "'");
         $idorganisation = mysqli_fetch_assoc($result_query_organisation_id);
         $resultidorganisationid = $idorganisation['id_organisation'];
@@ -653,6 +653,11 @@ where request_id = ".$_POST["request_id"]);
         $UserCreateID = $UserCr['fk_create_user_id'];
 
 
+        $result_query_user_createEmail = $mysqli->query("select email from users
+where user_id = ".$UserCreateID);
+        $UserCrEmail = mysqli_fetch_assoc($result_query_user_createEmail);
+        $UserCreateEmail = $UserCrEmail['email'];
+
 
 
         /*ищем расстояние от головного офиса для пользователя создавшего заявку (П1)*/
@@ -728,6 +733,9 @@ where Users.User_id =" . $resultUserResponsID);
             "\nТекущий статус заявки: ".$statusname."\nТекущий приоритет заявки: ".$priorityname."\n".$Comment;
             $headers = "*************";
             mail ($to, $subject, $message, $headers);
+
+            //Отправляем так же письмо пользователю, создавшему заявку $UserCreateEmail
+            mail ($UserCreateEmail, $subject, $message, $headers);
 
             /*Отправка письма конец*/
 

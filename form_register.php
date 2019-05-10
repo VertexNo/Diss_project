@@ -66,7 +66,6 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_R
                     <img src="captcha.php" alt="Капча" />
                 </div>
                 <div class="blockinput" >
-                    <span class="custom-dropdown">
                     <select name="option2" class="cellbut">
                         <?php //Option для выбора организации
 
@@ -80,10 +79,8 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_R
                         }
                         ?>
                     </select>
-                    </span>
                 </div>
                 <div class="blockinput" >
-                    <span class="custom-dropdown">
                     <select name="option1" class="cellbut">
                         <?php //Option для выбора пользователя
 
@@ -97,9 +94,9 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) && ($_SESSION['fk_R
                         }
                         ?>
                     </select>
-                    </span>
                 </div>
             </div>
+            <br>
             <input class="buttonReg" type="submit" name="btn_submit_register" value="Регистрация">
         </form>
     </div>

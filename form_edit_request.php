@@ -38,7 +38,6 @@ if(isset($_SESSION["email"]) && isset($_SESSION["password"]) /*&& ($_SESSION['fk
 
     <?php
     $request_id = $_GET['request'];
-
     $result_query_select = $mysqli->query("select req.request_id as request_id,
 req.caption as caption,
 req.short_description as short_description,
@@ -97,8 +96,8 @@ where request_id > 0 and request_id ='".$request_id."'");
             <?php
             if($row_request['status_id']==5)
             {
-                echo '<br> Данное обрашение было закрыто. Редактирование запрещено <br> 
-чтобы редактировать обращение, переоткройте его соответсвутющей кнопкой';
+                echo '<br> Данное обрашение было закрыто. Редактирование запрещено. <br> 
+Чтобы редактировать обращение, переоткройте его соответсвутющей кнопкой<br><br>';
             }
             ?>
             <div class="input"><input type="text" hidden id="date_start_work" name="date_start_work" value="<?php echo $row_request['date_start_work'] ?>"/></div>
@@ -113,7 +112,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <label class = "HeadersLabel">Заголовок:</label>
             <div class="input"><input type="text" id="caption" required="required" name="caption" value="<?php echo $row_request['caption']?>"
                 <?php
-                if($row_request['status_id']==5)
+                if($row_request['status_id']==5 || ($row_request['userCreateID'] != $_SESSION['user_id']))
                 {
                     echo ' readonly';
                 }
@@ -125,7 +124,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <label class = "HeadersLabel">Краткое описание:</label>
             <div class="input"><input type="text"  id="short_description" required="required" name="short_description" value="<?php echo $row_request['short_description'] ?>"
                     <?php
-                    if($row_request['status_id']==5)
+                    if($row_request['status_id']==5 || ($row_request['userCreateID'] != $_SESSION['user_id']))
                     {
                         echo ' readonly';
                     }
@@ -137,7 +136,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <label class = "HeadersLabel">Полное описание проблемы:</label>
             <div class="input"><textarea id="description" required="required" name="description"
                     <?php
-                    if($row_request['status_id']==5)
+                    if($row_request['status_id']==5 || ($row_request['userCreateID'] != $_SESSION['user_id']))
                     {
                         echo ' readonly';
                     }
@@ -344,6 +343,7 @@ where request_id > 0 and request_id ='".$request_id."'");
             <input type="submit" name="btn_update_request" value="Сохранить">
             <input type="submit" name="cancel_request" value="Отмена">
             <input type="reset" name="reset_request" value="Сброс">
+
             <?php
             if($row_request['status_id']==5)
             {

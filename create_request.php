@@ -846,9 +846,9 @@ fk_create_user_id, fk_responsible_user_id, date_create, fk_status_id, fk_priorit
 
             $to = $EmailUserResponse;
             $subject = "Автоматическая отправка уведомлений о назначении заявки";
-            $message = "Вам была назначена заявка №".$CurrentInsertRequestID.": ".$caption."\nC кратким описанием: ".$short_description."\nДата создания заявки: ".$dateCreate.
-            "\nПриоритет заявки:" .$priorityname."\nТип обращения: ".$servicename.
-            "\nОбратившийся пользоваетль: ".$resultUserCreateData;
+            $message = "Вам была назначена заявка №".$CurrentInsertRequestID.": ".$caption."\nC кратким описанием: ".$short_description."\nДата создания заявки: ".date("d.m.Y H:i", strtotime($dateCreate)).
+            "\nПриоритет заявки: " .$priorityname."\nТип обращения: ".$servicename.
+            "\nОбратившийся пользователь: ".$resultUserCreateData;
             $headers = "************";
             mail ($to, $subject, $message, $headers);
 

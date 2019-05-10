@@ -90,7 +90,7 @@ table tbody tr:nth-child(1n) {background: #e0e4e0;}
 table tbody tr:nth-child(2n) {background: #f4f4f4;}
 table tbody tr:hover {background: #ebffe8;}
 table th{
-    color: black; font-weight: bold; background: #59cf5c;
+    color: black; font-weight: bold; background: #4CAF50;
     position: -webkit-sticky;
     position: sticky;
     top: 45px;
@@ -104,7 +104,7 @@ table td
     width: 4%;
 }
 #caption{
-    width: 10%;
+    width: 9%;
 }
 #short_description{
     width: 10%;
@@ -128,7 +128,7 @@ table td
     width: 7%;
 }
 #priority_name{
-    width: 6%;
+    width: 7%;
 }
 #service_name{
     width: 15%;

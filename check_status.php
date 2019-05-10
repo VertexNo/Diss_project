@@ -7,7 +7,7 @@
  */
 //Добавляем файл подключения к БД
 require_once("dbconnect.php");
-
+session_start();
 if(isset($_POST["id"])) {
 
 
@@ -36,26 +36,8 @@ if(isset($_POST["id"])) {
     if($result_query->num_rows == 1){
 
         $row_status = mysqli_fetch_assoc($result_query);
-
-        if($row_status['status_id'] != 4)
-        {
-            echo '<select name="option5" class="cellbut" style=\'display: none\'>';
-            $result_query_evaluation = $mysqli->query("select evaluation_id,evaluation_name from request_performance_evaluation");
-            $result_query_num_evaluation = mysqli_num_rows($result_query_evaluation);
-            for ($i=0; $i <$result_query_num_evaluation; $i++)
-            {
-                $result = mysqli_fetch_array($result_query_evaluation);
-
-                if($evaluation_id == $result['evaluation_id'])
-                {
-                    echo '<option selected>'.$result['evaluation_name'].'</option>';
-                }
-                else {
-                    echo '<option>'.$result['evaluation_name'].'</option>';
-                }
-            }
-        }
-        else
+//ЕСЛИ НЕ РЕШЕНА и НЕ АДМИН ИЛИ НЕ ПОЛЬЗОВАТЕЛЬ
+                if(($row_status['status_id'] == 5) && ($_SESSION['fk_Role_id']== 3 || $_SESSION['fk_Role_id']== 1))
         {
             echo '<label>Оцените исполнение заявки:</label>';
             echo '<select name="option5" class="cellbut">';
@@ -75,6 +57,24 @@ if(isset($_POST["id"])) {
                     }
                 }
 
+        }
+        else
+        {
+            echo '<select name="option5" class="cellbut" style=\'display: none\'>';
+            $result_query_evaluation = $mysqli->query("select evaluation_id,evaluation_name from request_performance_evaluation");
+            $result_query_num_evaluation = mysqli_num_rows($result_query_evaluation);
+            for ($i=0; $i <$result_query_num_evaluation; $i++)
+            {
+                $result = mysqli_fetch_array($result_query_evaluation);
+
+                if($evaluation_id == $result['evaluation_id'])
+                {
+                    echo '<option selected>'.$result['evaluation_name'].'</option>';
+                }
+                else {
+                    echo '<option>'.$result['evaluation_name'].'</option>';
+                }
+            }
         }
 
 
